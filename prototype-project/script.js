@@ -19,6 +19,8 @@ stage.add(layer);
 
 var shapeVariable = 0
 
+
+
 document.getElementById('square').addEventListener('click', function (){shapeVariable = 1});
 document.getElementById('rectangle').addEventListener('click', function (){shapeVariable = 2});
 document.getElementById('ellipse').addEventListener('click', function (){shapeVariable = 3});
@@ -37,7 +39,7 @@ function createElement(event){
         case 1:
             var square = new Konva.Rect({
                 x: event.clientX-50,
-                y: event.clientY-50,
+                y: event.clientY-250, //-(height of header + 50)
                 width: 100,
                 height: 100,
                 fill: color,
@@ -51,7 +53,7 @@ function createElement(event){
         case 2:
             var rect = new Konva.Rect({
                 x: event.clientX-100,
-                y: event.clientY-50,
+                y: event.clientY-250,
                 width: 200,
                 height: 100,
                 fill: color,
@@ -65,7 +67,7 @@ function createElement(event){
         case 3: 
             var ellipse = new Konva.Ellipse({
                 x: event.clientX,
-                y: event.clientY,
+                y: event.clientY-200,
                 radiusX: 100,
                 radiusY: 50,
                 fill: color,
@@ -79,9 +81,9 @@ function createElement(event){
         case 4: 
             var triangle = new Konva.RegularPolygon({
                 x: event.clientX,
-                y: event.clientY,
+                y: event.clientY-200,
                 sides: 3,
-                radius: 101-3,
+                radius: 100,
                 fill: color,
                 stroke: 'black',
                 strokeWidth: 3,
@@ -92,7 +94,7 @@ function createElement(event){
         case 5: 
             var circle = new Konva.Circle({
                 x: event.clientX,
-                y: event.clientY,
+                y: event.clientY-200,
                 radius: 60,
                 fill: color,
                 stroke: 'black',
@@ -103,7 +105,7 @@ function createElement(event){
             break;
         case 6: 
             var line = new Konva.Line({
-                points: [event.clientX-100, event.clientY-100, event.clientX+100, event.clientY+100],
+                points: [event.clientX-100, event.clientY-300, event.clientX+100, event.clientY-100],
                 stroke: color,
                 strokeWidth: 10,
                 lineCap: 'round',
@@ -115,7 +117,7 @@ function createElement(event){
         case 7:
             var pentagon = new Konva.RegularPolygon({
                 x: event.clientX,
-                y: event.clientY,
+                y: event.clientY-200,
                 sides: 5,
                 radius: 70,
                 fill: color,
@@ -128,7 +130,7 @@ function createElement(event){
         case 8:
             var hexagon = new Konva.RegularPolygon({
                 x: event.clientX,
-                y: event.clientY,
+                y: event.clientY-200,
                 sides: 6,
                 radius: 70,
                 fill: color,
