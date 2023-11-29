@@ -1,0 +1,14 @@
+
+
+
+#container {
+    height: 400px;
+    width: 100%;
+    background-color: #fefefe;
+}
+
+.color {
+    height: 400px;
+    background-color: black;
+    color: white;
+}
