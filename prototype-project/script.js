@@ -257,6 +257,43 @@ var tr = new Konva.Transformer();
         tr.zIndex(100) //for the dialog box to be on top - comment this line and see the difference !
     });
 
+    // ... (Your existing code)
+
+// Function to add the current state to the undo stack
+function addToUndoStack() {
+  var clonedState = layer.getChildren().toArray().map(shape => shape.clone());
+  appHistory.push(clonedState);
+  appHistoryStep = appHistory.length - 1;
+}
+
+// Function to undo the last action
+function undoAction() {
+  if (appHistoryStep > 0) {
+    appHistoryStep--;
+    var prevState = appHistory[appHistoryStep];
+    layer.destroyChildren();
+    layer.add(...prevState);
+    layer.draw();
+  }
+}
+
+// Function to redo the last undone action
+function redoAction() {
+  if (appHistoryStep < appHistory.length - 1) {
+    appHistoryStep++;
+    var nextState = appHistory[appHistoryStep];
+    layer.destroyChildren();
+    layer.add(...nextState);
+    layer.draw();
+  }
+}
+
+// Event listeners for undo and redo buttons
+document.getElementById('undo').addEventListener('click', undoAction);
+document.getElementById('redo').addEventListener('click', redoAction);
+
+// ... (Your existing code)
+
 
 
 
@@ -319,7 +356,6 @@ var tr = new Konva.Transformer();
 
 
     
-
 
 
 
