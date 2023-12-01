@@ -1,6 +1,8 @@
 package com.example.paint.backend.paint.services;
 import org.springframework.stereotype.Service;
 import com.example.paint.backend.paint.services.shapes.shape;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -114,4 +116,22 @@ public class PaintService {
         }
     }
 
+    public Save loadFromXML(String path) throws IOException {
+        Save loadedSave = Save.loadFromXML(path);
+        if (loadedSave != null) {
+            List<shape> currentShapes = getCurrentState();
+            currentShapes.addAll(loadedSave.getLastUpdate());
+            saveState(currentShapes);
+            return loadedSave;
+        } else {
+            return null;
+        }
+    }
+
+    public void saveToXML(String path, String idCounter) throws IOException {
+        Save save = new Save();
+        save.setIdCounter(idCounter);
+        save.setLastUpdate(getCurrentState());
+        save.saveToXML(path);
+    }
 }
