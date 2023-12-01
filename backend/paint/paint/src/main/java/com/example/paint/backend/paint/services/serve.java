@@ -2,15 +2,26 @@ package com.example.paint.backend.paint.services;
 import org.springframework.stereotype.Service;
 import com.example.paint.backend.paint.services.shapes.shape;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
+
 
 @Service
 public class PaintService {
 
+    /*
+     *
+     * Paint Service class is Singelton class
+     * as the program will only need one instance
+     * from this class.
+     * 
+     */
+
     private static PaintService paintService = null;
     private PaintService() {
     }
+
     public static PaintService getInstance() {
         if (paintService == null) {
             paintService = new PaintService();
@@ -20,19 +31,26 @@ public class PaintService {
 
     private Stack<List<shape>> shapeStack = new Stack<>();
     private Stack<List<shape>> redoStack = new Stack<>();
-
+    // for cloning purpose
+    private HashMap<String, shape> shapeMap = new HashMap<>();
 
     public void addshape(shape shape) {
         List<shape> currentshapes = getCurrentState();
         currentshapes.add(shape);
         saveState(currentshapes);
+        shapeMap.put(shape.getId(), shape);
     }
-
 
     public void removeshape(String shapeId) {
         List<shape> currentshapes = getCurrentState();
         currentshapes.removeIf(shape -> shape.getId().equals(shapeId));
         saveState(currentshapes);
+        shapeMap.remove(shapeId);
+    }
+
+    // used in cloning a shape 
+    public shape getShapeById(String shapeId) {
+        return shapeMap.get(shapeId);
     }
 
 
@@ -95,6 +113,5 @@ public class PaintService {
             }
         }
     }
-
 
 }
