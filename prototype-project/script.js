@@ -1,25 +1,43 @@
-var range = document.getElementById("range");
-var rangeValue = document.getElementById("range-value");
-rangeValue.innerHTML = range.value;
 
-range.oninput = function() {
-    rangeValue.innerHTML = this.value;
-}
-// variable stroke width have problems with transform (scaling) box
 
-//problem here : need to be responsive 
+
+//FOR THE CANVAS TO BE RESPONSIVE:
+var sceneWidth = 1000; //anu value as it will change instantly to fit the canvas container
+var sceneHeight = 1000;
+
 var stage = new Konva.Stage({
     container: 'container',
-    width: window.innerWidth,
-    height: 400,
+    width: sceneWidth,
+    height: sceneHeight,
 });
 
 var layer = new Konva.Layer();
 stage.add(layer);
 
+function fitStageIntoParentContainer() {
+    var container = document.querySelector('section');
+
+    // now we need to fit stage into parent container
+    var containerWidth = container.offsetWidth;
+    var containerHeight = container.offsetHeight;
+
+    // but we also make the full scene visible
+    // so we need to scale all objects on canvas
+    var scaleWidth = containerWidth / sceneWidth;
+    var scaleHeight = containerHeight / sceneHeight;
+
+    stage.width(sceneWidth * scaleWidth);
+    stage.height(sceneHeight * scaleHeight);
+}
+
+fitStageIntoParentContainer();
+  // adapt the stage on any window resize
+window.addEventListener('resize', fitStageIntoParentContainer);
+
+
+
+
 var shapeVariable = 0
-
-
 
 document.getElementById('square').addEventListener('click', function (){shapeVariable = 1});
 document.getElementById('rectangle').addEventListener('click', function (){shapeVariable = 2});
@@ -257,43 +275,6 @@ var tr = new Konva.Transformer();
         tr.zIndex(100) //for the dialog box to be on top - comment this line and see the difference !
     });
 
-    // ... (Your existing code)
-
-// Function to add the current state to the undo stack
-function addToUndoStack() {
-  var clonedState = layer.getChildren().toArray().map(shape => shape.clone());
-  appHistory.push(clonedState);
-  appHistoryStep = appHistory.length - 1;
-}
-
-// Function to undo the last action
-function undoAction() {
-  if (appHistoryStep > 0) {
-    appHistoryStep--;
-    var prevState = appHistory[appHistoryStep];
-    layer.destroyChildren();
-    layer.add(...prevState);
-    layer.draw();
-  }
-}
-
-// Function to redo the last undone action
-function redoAction() {
-  if (appHistoryStep < appHistory.length - 1) {
-    appHistoryStep++;
-    var nextState = appHistory[appHistoryStep];
-    layer.destroyChildren();
-    layer.add(...nextState);
-    layer.draw();
-  }
-}
-
-// Event listeners for undo and redo buttons
-document.getElementById('undo').addEventListener('click', undoAction);
-document.getElementById('redo').addEventListener('click', redoAction);
-
-// ... (Your existing code)
-
 
 
 
@@ -356,6 +337,7 @@ document.getElementById('redo').addEventListener('click', redoAction);
 
 
     
+
 
 
 

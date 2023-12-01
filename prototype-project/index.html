@@ -14,12 +14,11 @@
         <div class="draw">
                 <!-- <label class="saveload" id="shape">Save&amp;Load</label> -->
                 <button id="save">Save</button>
-                <button  id="load" >Load</button>
+                <button id="load">Load</button>
                 <div class="inputs">
                     <input type="text" #name class="name" placeholder="Enter name of file " style="display: inline;">
-                
-                <input type="text" #save class="save" placeholder="File path to save (xml / json)">
-                <input type="text" #load class="load" placeholder="File path to load (xml / json)">
+                    <input type="text" #save class="save" placeholder="File path to save (xml / json)">
+                    <input type="text" #load class="load" placeholder="File path to load (xml / json)">
                 </div>
                 
                 <div class="format">
@@ -39,68 +38,68 @@
 
     </header>
 
-    <div class="sidenavshape">
-    <p class="title" id="shape">Shapes</p>
-    <ul class="buttonshape">
-        <li>
-            <img class="images" src="icons/square.png" alt="">
-            <button class="shapes" id="square">Square</button>
-        </li>
-        <li>
-            <img class="images" src="icons/rectangle.png" alt="">
-            <button class="shapes" id="rectangle">Rectangle</button>
-        </li>
-        <li>
-            <img class="images" src="icons/triangle.svg" alt="">
-            <button class="shapes" id="triangle">Triangle</button>
-        </li>
-        <li>
-            <img class="images" src="icons/circle.svg" alt="">
-            <button class="shapes" id="circle">Circle</button>
-        </li>
-        
-        <li>
-            <img class="images" src="icons/ellipse.png" alt="">
-            <button class="shapes" id="ellipse">Ellipse</button>
-        </li>
-        
-        <li>
-            <img class="images" src="icons/line.png" alt="">
-            <button class="shapes" id="line">Line</button>
-        </li>
-        <li>
-            <img class="images" src="icons/pentagon.png" alt="">
-            <button class="shapes" id="pentagon">Pentagon</button>
-        </li>
-        <li>
-            <img class="images" src="icons/hexagon.png" alt="">
-            <button class="shapes" id="hexagon">Hexagon</button>
-        </li>
-        
-    </ul>
-    </div>
+    <div class="main-container">
+        <div class="sidenavshape">
+            <p class="title" id="shape">Shapes</p>
+            <ul class="buttonshape">
+                <li>
+                    <img class="images" src="icons/square.png" alt="">
+                    <button class="shapes" id="square">Square</button>
+                </li>
+                <li>
+                    <img class="images" src="icons/rectangle.png" alt="">
+                    <button class="shapes" id="rectangle">Rectangle</button>
+                </li>
+                <li>
+                    <img class="images" src="icons/triangle.svg" alt="">
+                    <button class="shapes" id="triangle">Triangle</button>
+                </li>
+                <li>
+                    <img class="images" src="icons/circle.svg" alt="">
+                    <button class="shapes" id="circle">Circle</button>
+                </li>
+                
+                <li>
+                    <img class="images" src="icons/ellipse.png" alt="">
+                    <button class="shapes" id="ellipse">Ellipse</button>
+                </li>
+                
+                <li>
+                    <img class="images" src="icons/line.png" alt="">
+                    <button class="shapes" id="line">Line</button>
+                </li>
+                <li>
+                    <img class="images" src="icons/pentagon.png" alt="">
+                    <button class="shapes" id="pentagon">Pentagon</button>
+                </li>
+                <li>
+                    <img class="images" src="icons/hexagon.png" alt="">
+                    <button class="shapes" id="hexagon">Hexagon</button>
+                </li>
+                
+            </ul>
+        </div>
     
-    <div class="sidenavoption">
-        <p class="title" id="option">Options</p>
-        <button class="options" id="undo">Undo</button>
-        <button class="options" id="redo">Redo</button>
-        <button class="options" id="erase">Erase</button>
-        <button class="options" id="copy">Copy</button>
-        <button class="options" id="clear">Clear</button>
-
-        <form action="">
-            <label id="selectcolor" for="coloring">Select Color</label>
-            <input type="color" id="color" value="#dabf81" >
-            <!-- <input type="range" min="0" max="100" value="50" id="range"> -->
-            <!-- <span id="range-value"></span> -->
-        </form>
+        <section>
+            <div id="container"></div>
+        </section>
+    
+        <div class="sidenavoption">
+            <p class="title" id="option">Options</p>
+            <button class="options" id="undo">Undo</button>
+            <button class="options" id="redo">Redo</button>
+            <button class="options" id="erase">Erase</button>
+            <button class="options" id="copy">Copy</button>
+            <button class="options" id="clear">Clear</button>
+    
+            <form action="">
+                <label id="selectcolor" for="coloring">Select Color</label>
+                <input type="color" id="color" value="#dabf81" >
+                <!-- <input type="range" min="0" max="100" value="50" id="range"> -->
+                <!-- <span id="range-value"></span> -->
+            </form>
+        </div>
     </div>
-        
-
-    <section>
-         <div id="container"></div>
-    </section>
-       
     
     
 
