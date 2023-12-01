@@ -65,3 +65,5 @@ let history = [
   document.querySelector('#undo').addEventListener('click', handleUndo)
   document.querySelector('#redo').addEventListener('click', handleRedo);
   rect.on('dragend', handleDragEnd)
+
+

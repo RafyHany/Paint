@@ -12,7 +12,6 @@
 <body>
     <header id="header" >
         <div class="draw">
-                <!-- <label class="saveload" id="shape">Save&amp;Load</label> -->
                 <button id="save">Save</button>
                 <button id="load">Load</button>
                 <div class="inputs">
@@ -20,22 +19,15 @@
                     <input type="text" #save class="save" placeholder="File path to save (xml / json)">
                     <input type="text" #load class="load" placeholder="File path to load (xml / json)">
                 </div>
-                
                 <div class="format">
                     <ul id="extension">
-                
                         <li id="xml">
                             <input type="radio" name="radio" value="xml">xml</li>
-                
                         <li id="json">
                             <input type="radio" name="radio" value="json"> json</li>
                     </ul>
                     </div>
-                    
-                    
         </div>
-
-
     </header>
 
     <div class="main-container">
@@ -91,12 +83,9 @@
             <button class="options" id="erase">Erase</button>
             <button class="options" id="copy">Copy</button>
             <button class="options" id="clear">Clear</button>
-    
-            <form action="">
+            <form>
                 <label id="selectcolor" for="coloring">Select Color</label>
                 <input type="color" id="color" value="#dabf81" >
-                <!-- <input type="range" min="0" max="100" value="50" id="range"> -->
-                <!-- <span id="range-value"></span> -->
             </form>
         </div>
     </div>

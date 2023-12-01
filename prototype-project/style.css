@@ -1,5 +1,6 @@
 body, p { margin:0; padding:0}
 
+
 html {
     height: 100%;
 }
@@ -96,17 +97,11 @@ header{
     margin-left: calc(-10px * 0.6);
 }
 
-#option{
-    margin-top: calc(15px * 0.6);
-    margin-bottom: calc(70px * 0.6);
-}
-
 .shapes, .options{
-    width: 95%;
+    width: 100%;
     padding : calc(5px * 0.6) 0;
     margin-bottom: calc(5px * 0.6);
     margin-top: calc(4px * 0.6);
-    margin-right: calc(20px * 0.6);
     border-radius: calc(15px * 0.6);
     color:rgb(2,0,2);
     font-size: calc(20px * 0.6);
@@ -119,13 +114,19 @@ header{
     width: 80%;
 }
 
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 #selectcolor{
     width: 100%;
     margin: calc(4px * 0.6) 0px calc(4px * 0.6) calc(25px * 0.6);
     padding : calc(8px * 0.6) 0;
     color:rgb(2,0,2);
     font-size: calc(22px * 0.6);
-    font-weight: 520;
+    font-weight: bold;
     font-style: italic;
     cursor: pointer;
     font-family: 'Signika Negative', sans-serif;
@@ -135,8 +136,6 @@ header{
     height: calc(50px * 0.6);
     width: calc(50px * 0.6);
     background-color: transparent;
-    margin-left: calc(58px * 0.6);
-    margin-top: 0 px;
     border: inset;
     border-radius: 100%;
     cursor: pointer;
@@ -148,9 +147,12 @@ header{
 }
 
 .sidenavoption {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     width: 10%;
     padding:calc(5px * 0.6) calc(30px * 0.6) calc(20px * 0.6) calc(30px * 0.6);
-    height:calc(900px * 0.6);
+    height:calc(600px * 0.6);
     margin: calc(15px * 0.6);
     background: linear-gradient(to right,#92399a 0%,#bd82be );
     padding-top: calc(20px * 0.6);
@@ -158,28 +160,27 @@ header{
 }
 
 .sidenavoption button {
-    padding: 6px 16px 6px 16px;
+    padding: calc(6px * 0.6) calc(16px * 0.6);
     text-decoration: none;
     font-size: calc(25px * 0.6);
     color: black;
     display: block;
-    margin: calc(18px * 0.6);
-    text-align: center;
-    align-items: center;
-    justify-items: center;
 }
 
 .sidenavoption button:hover {
     color: #f1f1f1;
 }
 .sidenavshape {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     width: 10%;
     padding:calc(5px * 0.6) calc(30px * 0.6) calc(20px * 0.6);
-    height: calc(900px * 0.6);
+    height: calc(600px * 0.6);
     margin: calc(15px * 0.6);
     background: linear-gradient(to left,#92399a 0%,#bd82be );
-    padding-top: 20px;
-    border-radius: 50px;
+    padding-top: calc(20px * 0.6);
+    border-radius: calc(50px * 0.6);
 }
 
 .sidenavshape button {

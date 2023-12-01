@@ -1,4 +1,10 @@
-
+//for drawing shapes correctly 
+var item1ForWidth = document.querySelector('.sidenavshape').offsetWidth
+var item2ForWidth = parseInt(window.getComputedStyle(document.getElementById('container')).marginLeft)
+var item1ForHeight = document.querySelector('header').offsetHeight
+var item2ForHeight = parseInt(window.getComputedStyle(document.getElementById('container')).marginLeft)
+var offsetHeightCanvas =item1ForHeight + item2ForHeight
+var offsetWidthCanvas =item1ForWidth + item2ForWidth
 
 
 //FOR THE CANVAS TO BE RESPONSIVE:
@@ -13,21 +19,23 @@ var stage = new Konva.Stage({
 
 var layer = new Konva.Layer();
 stage.add(layer);
+fitStageIntoParentContainer();
 
 function fitStageIntoParentContainer() {
-    var container = document.querySelector('section');
+    var container = window.getComputedStyle(document.getElementById('container'))
 
     // now we need to fit stage into parent container
-    var containerWidth = container.offsetWidth;
-    var containerHeight = container.offsetHeight;
+    var containerWidth = parseInt(container.width);
+    var containerHeight = parseInt(container.height);
+    stage.width(containerWidth);
+    stage.height(containerHeight);
 
-    // but we also make the full scene visible
-    // so we need to scale all objects on canvas
-    var scaleWidth = containerWidth / sceneWidth;
-    var scaleHeight = containerHeight / sceneHeight;
-
-    stage.width(sceneWidth * scaleWidth);
-    stage.height(sceneHeight * scaleHeight);
+    item1ForWidth  = document.querySelector('.sidenavshape').offsetWidth
+    item2ForWidth  = parseInt(window.getComputedStyle(document.getElementById('container')).marginLeft)
+    item1ForHeight = document.querySelector('header').offsetHeight
+    item2ForHeight = parseInt(window.getComputedStyle(document.getElementById('container')).marginLeft)
+    offsetHeightCanvas = item1ForHeight + item2ForHeight
+    offsetWidthCanvas  = item1ForWidth + item2ForWidth
 }
 
 fitStageIntoParentContainer();
@@ -56,8 +64,8 @@ function createElement(event){
     switch (shapeVariable){
         case 1:
             var square = new Konva.Rect({
-                x: event.clientX-50,
-                y: event.clientY-250, //-(height of header + 50)
+                x: event.clientX-offsetWidthCanvas,
+                y: event.clientY-offsetHeightCanvas,
                 width: 100,
                 height: 100,
                 fill: color,
@@ -70,8 +78,8 @@ function createElement(event){
             break;
         case 2:
             var rect = new Konva.Rect({
-                x: event.clientX-100,
-                y: event.clientY-250,
+                x: event.clientX-offsetWidthCanvas,
+                y: event.clientY-offsetHeightCanvas,
                 width: 200,
                 height: 100,
                 fill: color,
@@ -84,8 +92,8 @@ function createElement(event){
             break;
         case 3: 
             var ellipse = new Konva.Ellipse({
-                x: event.clientX,
-                y: event.clientY-200,
+                x: event.clientX-offsetWidthCanvas,
+                y: event.clientY-offsetHeightCanvas,
                 radiusX: 100,
                 radiusY: 50,
                 fill: color,
@@ -98,8 +106,8 @@ function createElement(event){
             break;
         case 4: 
             var triangle = new Konva.RegularPolygon({
-                x: event.clientX,
-                y: event.clientY-200,
+                x: event.clientX-offsetWidthCanvas,
+                y: event.clientY-offsetHeightCanvas,
                 sides: 3,
                 radius: 100,
                 fill: color,
@@ -111,8 +119,8 @@ function createElement(event){
             break;
         case 5: 
             var circle = new Konva.Circle({
-                x: event.clientX,
-                y: event.clientY-200,
+                x: event.clientX-offsetWidthCanvas,
+                y: event.clientY-offsetHeightCanvas,
                 radius: 60,
                 fill: color,
                 stroke: 'black',
@@ -123,7 +131,8 @@ function createElement(event){
             break;
         case 6: 
             var line = new Konva.Line({
-                points: [event.clientX-100, event.clientY-300, event.clientX+100, event.clientY-100],
+                points: [event.clientX-100-offsetWidthCanvas, event.clientY-100-offsetHeightCanvas,
+                        event.clientX+100-offsetWidthCanvas, event.clientY+100-offsetHeightCanvas],
                 stroke: color,
                 strokeWidth: 10,
                 lineCap: 'round',
@@ -134,8 +143,8 @@ function createElement(event){
             break;
         case 7:
             var pentagon = new Konva.RegularPolygon({
-                x: event.clientX,
-                y: event.clientY-200,
+                x: event.clientX-offsetWidthCanvas,
+                y: event.clientY-offsetHeightCanvas,
                 sides: 5,
                 radius: 70,
                 fill: color,
@@ -147,8 +156,8 @@ function createElement(event){
             break;
         case 8:
             var hexagon = new Konva.RegularPolygon({
-                x: event.clientX,
-                y: event.clientY-200,
+                x: event.clientX-offsetWidthCanvas,
+                y: event.clientY-offsetHeightCanvas,
                 sides: 6,
                 radius: 70,
                 fill: color,
