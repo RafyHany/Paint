@@ -6,9 +6,9 @@
                   <button id="save">Save</button>
                   <button id="load">Load</button>
                   <div class="inputs">
-                      <input type="text" id="name" class="name" placeholder="Enter name of file " style="display: inline;">
-                      <input type="text" id="save" class="save" placeholder="File path to save (xml / json)">
-                      <input type="text" id="load" class="load" placeholder="File path to load (xml / json)">
+                      <input type="text"  class="name" placeholder="Enter name of file " style="display: inline;">
+                      <input type="text"  class="save" placeholder="File path to save (xml / json)">
+                      <input type="text"  class="load" placeholder="File path to load (xml / json)">
                   </div>
                   <div class="format">
                       <ul id="extension">
@@ -282,37 +282,21 @@ export default {
                 this.rectangles.push(square)
                 this.allshapes.push(square)
 
-
-                var xhr = new XMLHttpRequest();
-
-                // Specify the HTTP method, URL endpoint, and asynchronous flag
-                xhr.open('POST', 'http://localhost:8080/paint/create', false);
-
-                // Set the content type header
-                xhr.setRequestHeader('Content-Type', 'application/json');
-
-                // Convert the data to JSON format
-                var jsonData = JSON.stringify(square);
-
-                // Set the callback function to handle the response
-                xhr.onreadystatechange = function() {
-                if (xhr.readyState === XMLHttpRequest.DONE) {
-                    if (xhr.status === 200) {
-                    // Request was successful
-                    
-
-                    result = xhr.responseText
-
-
-                    } else {
-                    // Request failed
-                    console.error('Request failed. Status:', xhr.status);
-                    }
-                }
-                };
-                // Send the HTTP request with the JSON data
-                xhr.send(jsonData);
-
+                fetch("http://localhost:8081/paint/create",{
+                method:"POST",
+                headers : {
+                    'Content-type':'application/json',
+                },
+                body : JSON.stringify(square)
+                }).then(responce=>{
+                return responce.text();
+                }).then(data =>{
+                console.log(data);
+                this.result = data;
+                }).catch(error => {
+                console.error("Error:", error);
+                this.isError = true;
+                });
                 break;
             case 2: 
                 var rect = ({
@@ -330,6 +314,22 @@ export default {
                 this.id += 1
                 this.rectangles.push(rect)
                 this.allshapes.push(rect)
+
+                fetch("http://localhost:8081/paint/create",{
+                method:"POST",
+                headers : {
+                    'Content-type':'application/json',
+                },
+                body : JSON.stringify(rect)
+                }).then(responce=>{
+                return responce.text();
+                }).then(data =>{
+                console.log(data);
+                this.result = data;
+                }).catch(error => {
+                console.error("Error:", error);
+                this.isError = true;
+                });
                 break;
             case 3: 
                 var ellipse = ({
@@ -347,6 +347,22 @@ export default {
                 this.id += 1
                 this.ellipses.push(ellipse)
                 this.allshapes.push(ellipse)
+
+                fetch("http://localhost:8081/paint/create",{
+                method:"POST",
+                headers : {
+                    'Content-type':'application/json',
+                },
+                body : JSON.stringify(ellipse)
+                }).then(responce=>{
+                return responce.text();
+                }).then(data =>{
+                console.log(data);
+                this.result = data;
+                }).catch(error => {
+                console.error("Error:", error);
+                this.isError = true;
+                });
                 break;
             case 4: 
                 var triangle = ({
@@ -363,6 +379,22 @@ export default {
                 this.id += 1
                 this.triangles.push(triangle)
                 this.allshapes.push(triangle)
+
+                fetch("http://localhost:8081/paint/create",{
+                method:"POST",
+                headers : {
+                    'Content-type':'application/json',
+                },
+                body : JSON.stringify(triangle)
+                }).then(responce=>{
+                return responce.text();
+                }).then(data =>{
+                console.log(data);
+                this.result = data;
+                }).catch(error => {
+                console.error("Error:", error);
+                this.isError = true;
+                });
                 break;
             case 5: 
                 var circle = ({
@@ -378,6 +410,22 @@ export default {
                 this.id +=1
                 this.circles.push(circle)
                 this.allshapes.push(circle)
+
+                fetch("http://localhost:8081/paint/create",{
+                method:"POST",
+                headers : {
+                    'Content-type':'application/json',
+                },
+                body : JSON.stringify(circle)
+                }).then(responce=>{
+                return responce.text();
+                }).then(data =>{
+                console.log(data);
+                this.result = data;
+                }).catch(error => {
+                console.error("Error:", error);
+                this.isError = true;
+                });
                 break;
             case 6: 
                 var line = ({
@@ -393,6 +441,22 @@ export default {
                 this.id +=1
                 this.lines.push(line)
                 this.allshapes.push(line)
+
+                fetch("http://localhost:8081/paint/create",{
+                method:"POST",
+                headers : {
+                    'Content-type':'application/json',
+                },
+                body : JSON.stringify(line)
+                }).then(responce=>{
+                return responce.text();
+                }).then(data =>{
+                console.log(data);
+                this.result = data;
+                }).catch(error => {
+                console.error("Error:", error);
+                this.isError = true;
+                });
                 break;
             case 7:
                 var pentagon = ({
@@ -409,6 +473,22 @@ export default {
                 this.id += 1
                 this.pentagons.push(pentagon)
                 this.allshapes.push(pentagon)
+
+                fetch("http://localhost:8081/paint/create",{
+                method:"POST",
+                headers : {
+                    'Content-type':'application/json',
+                },
+                body : JSON.stringify(pentagon)
+                }).then(responce=>{
+                return responce.text();
+                }).then(data =>{
+                console.log(data);
+                this.result = data;
+                }).catch(error => {
+                console.error("Error:", error);
+                this.isError = true;
+                });
                 break;
             case 8:
                 var hexagon = ({
@@ -425,6 +505,22 @@ export default {
                 this.id +=1
                 this.hexagons.push(hexagon)
                 this.allshapes.push(hexagon)
+    
+                fetch("http://localhost:8081/paint/create",{
+                method:"POST",
+                headers : {
+                    'Content-type':'application/json',
+                },
+                body : JSON.stringify(hexagon)
+                }).then(responce=>{
+                return responce.text();
+                }).then(data =>{
+                console.log(data);
+                this.result = data;
+                }).catch(error => {
+                console.error("Error:", error);
+                this.isError = true;
+                });
                 break;
         }
         console.log(this.allshapes)
