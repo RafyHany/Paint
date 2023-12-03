@@ -92,7 +92,7 @@ public class PaintService {
             shapeStack.push(redoStack.pop());
             return getCurrentState();
         }
-        return null;
+        return getCurrentState();
     }
 
     private List<shape> getCurrentState() {
@@ -160,7 +160,7 @@ public class PaintService {
         }
         else if (path.endsWith("json")) {
             saveToJson(path, idCounter);
-            return " saved in " + path ;
+            return "saved in " + path ;
         }
         else
             return "unknown extension" ;
