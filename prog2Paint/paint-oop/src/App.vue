@@ -281,6 +281,38 @@ export default {
                 this.id += 1
                 this.rectangles.push(square)
                 this.allshapes.push(square)
+
+
+                var xhr = new XMLHttpRequest();
+
+                // Specify the HTTP method, URL endpoint, and asynchronous flag
+                xhr.open('POST', 'http://localhost:8080/paint/create', false);
+
+                // Set the content type header
+                xhr.setRequestHeader('Content-Type', 'application/json');
+
+                // Convert the data to JSON format
+                var jsonData = JSON.stringify(square);
+
+                // Set the callback function to handle the response
+                xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                    // Request was successful
+                    
+
+                    result = xhr.responseText
+
+
+                    } else {
+                    // Request failed
+                    console.error('Request failed. Status:', xhr.status);
+                    }
+                }
+                };
+                // Send the HTTP request with the JSON data
+                xhr.send(jsonData);
+
                 break;
             case 2: 
                 var rect = ({
