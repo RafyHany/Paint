@@ -2,9 +2,8 @@ package com.example.paint.backend.paint.controler;
 
 
 import com.example.paint.backend.paint.services.PaintService;
-import com.example.paint.backend.paint.services.shapes.ShapeFactory;
-import com.example.paint.backend.paint.services.shapes.shape;
-import com.example.paint.backend.paint.services.shapes.shapeDTO;
+import com.example.paint.backend.paint.services.Save;
+import com.example.paint.backend.paint.services.shapes.*;
 
 import java.util.List;
 
@@ -100,7 +99,18 @@ public class control {
     }
 
     */
-
+    @PostMapping("/clone/{idOld}/{idNew}")
+    public ResponseEntity<shape> clone(@PathVariable String idOld , @PathVariable String idNew ){
+        System.out.println("arriave");
+        try {
+            shape s = paintService.getShapeById(idOld).clone(idNew);
+            paintService.addshape(s);
+            return ResponseEntity.ok(s);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
     @PostMapping("/undo")
     public ResponseEntity<List<shape>> undo() {
         try {
@@ -122,7 +132,7 @@ public class control {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
-    /* 
+     
     @GetMapping("/printShapeStack")
     public ResponseEntity<String> printShapeStack() {
         try {
@@ -133,5 +143,31 @@ public class control {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error");
         }
     }
-    */
+
+    @PostMapping("/save")
+    public ResponseEntity<String> saveToXML(@RequestParam String path, @RequestParam String idCounter) {
+        try {
+            paintService.saveToXML(path, idCounter);
+            return ResponseEntity.ok("Shapes saved to XML successfully");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to save shapes to XML");
+        }
+    }
+
+    @PostMapping("/load")
+    public ResponseEntity<Save> loadFromXML(@RequestParam String path) {
+        try {
+            Save loadedSave = paintService.loadFromXML(path);
+            if (loadedSave != null) {
+                return ResponseEntity.ok(loadedSave);
+            } else {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+    
 }

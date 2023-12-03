@@ -1,5 +1,7 @@
 package com.example.paint.backend.paint.services.shapes;
 
+import com.example.paint.backend.paint.services.PaintService;
+
 public class Rectangle extends shape {
     private double width ;
     private double height ;
@@ -8,6 +10,12 @@ public class Rectangle extends shape {
         this.height = r.height ;
         this.width = r.width ;
     }
+    public Rectangle(Rectangle r){
+        super(r);
+        this.height = r.height ;
+        this.width = r.width ;
+    }
+
     public Rectangle(){}
 
     public double getHeight() {
@@ -29,5 +37,11 @@ public class Rectangle extends shape {
 
     public void drawShape() {
 
+    }
+    @Override
+    public Rectangle clone( String idNew)throws CloneNotSupportedException{
+        Rectangle newShape = new Rectangle(this);
+        newShape.setId(idNew);
+        return newShape ;
     }
 }
