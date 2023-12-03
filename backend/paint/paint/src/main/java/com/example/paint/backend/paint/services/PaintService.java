@@ -152,5 +152,30 @@ public class PaintService {
             return null;
         }
     }
+    public String saveFactory(String path, String idCounter) throws IOException {
+        if(path.endsWith("xml")) {
+            saveToXML(path, idCounter);
+            return "saved in " + path ;
+        }
+        else if (path.endsWith("json")) {
+            saveToJson(path, idCounter);
+            return " saved in " + path ;
+        }
+        else
+            return "unknown extension" ;
+    }
+    public Save loadFactory(String path) throws IOException {
+        System.out.println(path.endsWith("xml"));
+        System.out.println(path.endsWith("json"));
+        if(path.endsWith("xml")) {
+            return  loadFromXML(path);
+        }
+        else if (path.endsWith("json")) {
+
+            return loadFromjson(path);
+        }
+        else
+            return null;
+    }
 
 }

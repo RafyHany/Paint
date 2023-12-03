@@ -3,7 +3,9 @@ package com.example.paint.backend.paint.services.shapes;
 import com.example.paint.backend.paint.services.PaintService;
 
 import java.awt.*;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
+@JsonTypeName("circle")
 public class Circle extends shape {
     private double radius ;
     public Circle(shapeDTO c){

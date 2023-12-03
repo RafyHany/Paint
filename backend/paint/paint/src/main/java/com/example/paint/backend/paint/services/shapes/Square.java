@@ -1,7 +1,9 @@
 package com.example.paint.backend.paint.services.shapes;
 
 import com.example.paint.backend.paint.services.PaintService;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
+@JsonTypeName("square")
 public class Square extends shape{
     private double width ;
     private double height ;

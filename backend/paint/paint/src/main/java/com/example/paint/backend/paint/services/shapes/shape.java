@@ -1,5 +1,20 @@
 package com.example.paint.backend.paint.services.shapes;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,include = JsonTypeInfo.As.PROPERTY, visible = true)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = Square.class, name = "square"),
+        @JsonSubTypes.Type(value = Circle.class, name = "circle"),
+        @JsonSubTypes.Type(value = Elipse.class, name = "elipse"),
+        @JsonSubTypes.Type(value = Rectangle.class, name = "rectangle"),
+        @JsonSubTypes.Type(value = Line.class, name = "line"),
+        @JsonSubTypes.Type(value = Triangle.class, name = "triangle")
+
+})
+@JsonIgnoreProperties(value = "attributes",ignoreUnknown = true)
 public abstract class shape implements Cloneable {
     private double x ;
     private double y ;

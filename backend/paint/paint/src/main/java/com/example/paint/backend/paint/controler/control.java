@@ -145,20 +145,23 @@ public class control {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<String> saveToXML(@RequestParam String path, @RequestParam String idCounter) {
+    public ResponseEntity<String> save(@RequestParam String path ,@RequestParam String idCounter  ) {
+        System.out.println("sent");
         try {
-            paintService.saveToXML(path, idCounter);
-            return ResponseEntity.ok("Shapes saved to XML successfully");
+            System.out.println("arrive");
+            return ResponseEntity.ok(paintService.saveFactory( path, idCounter));
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to save shapes to XML");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to save shapes ");
         }
     }
 
     @PostMapping("/load")
-    public ResponseEntity<Save> loadFromXML(@RequestParam String path) {
+    public ResponseEntity<Save> load(@RequestParam String path){
         try {
-            Save loadedSave = paintService.loadFromXML(path);
+            System.out.println("path : ");
+            System.out.println(path);
+            Save loadedSave = paintService.loadFactory(path);
             if (loadedSave != null) {
                 return ResponseEntity.ok(loadedSave);
             } else {

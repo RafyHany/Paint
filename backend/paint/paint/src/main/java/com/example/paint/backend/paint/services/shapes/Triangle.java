@@ -1,7 +1,9 @@
 package com.example.paint.backend.paint.services.shapes;
 
 import com.example.paint.backend.paint.services.PaintService;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
+@JsonTypeName("triangle")
 public class Triangle extends shape{ // this class can also be for pentagon and hexagon according to #of sides
     private double radius ;
     private int sides ;

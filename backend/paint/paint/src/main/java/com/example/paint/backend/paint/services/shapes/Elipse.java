@@ -1,6 +1,9 @@
 package com.example.paint.backend.paint.services.shapes;
 
 import com.example.paint.backend.paint.services.PaintService;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+
+@JsonTypeName("elipse")
 
 public class Elipse extends shape{
     private double radiusX;
