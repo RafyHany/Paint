@@ -83,7 +83,8 @@ public class PaintService {
             redoStack.push(shapeStack.pop());
             return getCurrentState();
         }
-        return null;
+
+        return new ArrayList<shape>();
     }
     
     public List<shape> redo() {
