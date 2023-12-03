@@ -1,9 +1,16 @@
 package com.example.paint.backend.paint.services.shapes;
 
+import com.example.paint.backend.paint.services.PaintService;
+
 public class Triangle extends shape{ // this class can also be for pentagon and hexagon according to #of sides
     private double radius ;
     private int sides ;
     public Triangle (shapeDTO t){
+        super(t);
+        this.radius = t.radius ;
+        this.sides = t.sides ;
+    }
+    public Triangle (Triangle t){
         super(t);
         this.radius = t.radius ;
         this.sides = t.sides ;
@@ -24,5 +31,13 @@ public class Triangle extends shape{ // this class can also be for pentagon and 
 
     public void setSides(int sides) {
         this.sides = sides;
+    }
+    @Override
+    public Triangle clone( String idNew)throws CloneNotSupportedException{
+
+        Triangle newShape = new Triangle(this);
+        newShape.setId(idNew);
+
+        return newShape ;
     }
 }

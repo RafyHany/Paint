@@ -33,8 +33,9 @@ public class PaintService {
 
     private Stack<List<shape>> shapeStack = new Stack<>();
     private Stack<List<shape>> redoStack = new Stack<>();
-    // for cloning purpose
-    private HashMap<String, shape> shapeMap = new HashMap<>();
+
+
+    private  HashMap<String, shape> shapeMap = new HashMap<>(); // for cloning purpose
 
     public void addshape(shape shape) {
         List<shape> currentshapes = getCurrentState();
@@ -47,11 +48,11 @@ public class PaintService {
         List<shape> currentshapes = getCurrentState();
         currentshapes.removeIf(shape -> shape.getId().equals(shapeId));
         saveState(currentshapes);
-        shapeMap.remove(shapeId);
+        //shapeMap.remove(shapeId);
     }
 
     // used in cloning a shape 
-    public shape getShapeById(String shapeId) {
+    public   shape getShapeById(String shapeId) {
         return shapeMap.get(shapeId);
     }
 

@@ -3,9 +3,7 @@ package com.example.paint.backend.paint.controler;
 
 import com.example.paint.backend.paint.services.PaintService;
 import com.example.paint.backend.paint.services.Save;
-import com.example.paint.backend.paint.services.shapes.ShapeFactory;
-import com.example.paint.backend.paint.services.shapes.shape;
-import com.example.paint.backend.paint.services.shapes.shapeDTO;
+import com.example.paint.backend.paint.services.shapes.*;
 
 import java.util.List;
 
@@ -101,7 +99,18 @@ public class control {
     }
 
     */
-
+    @PostMapping("/clone/{idOld}/{idNew}")
+    public ResponseEntity<shape> clone(@PathVariable String idOld , @PathVariable String idNew ){
+        System.out.println("arriave");
+        try {
+            shape s = paintService.getShapeById(idOld).clone(idNew);
+            paintService.addshape(s);
+            return ResponseEntity.ok(s);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
     @PostMapping("/undo")
     public ResponseEntity<List<shape>> undo() {
         try {
