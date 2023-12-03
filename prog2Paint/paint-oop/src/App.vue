@@ -1,6 +1,5 @@
 <template>
   <body @mousemove="fitStageIntoParentContainer">
-
       <header id="header" >
           <div class="draw">
                   <button id="save">Save</button>
@@ -90,8 +89,8 @@
       
           <div class="sidenavoption">
               <p class="title" id="option">Options</p>
-              <button class="options" id="undo">Undo</button>
-              <button class="options" id="redo">Redo</button>
+              <button class="options" id="undo" @click="undo">Undo</button>
+              <button class="options" id="redo" @click="redo">Redo</button>
               <button class="options" id="erase">Erase</button>
               <button class="options" id="copy">Copy</button>
               <button class="options" id="clear" @click="clear">Clear</button>
@@ -106,6 +105,7 @@
 
 <script>
 import Konva from 'konva';
+import { isProxy, toRaw } from 'vue';
 import { shapes } from 'konva/lib/Shape';
 import { Stage, Layer, Rect , Transformer} from 'vue-konva';
 import { ref } from 'vue';
@@ -232,7 +232,94 @@ export default {
     },
 
 
-
+    async undo (){
+        this.rectangles= []
+        this.circles= []
+        this.ellipses= []
+        this.triangles= []
+        this.pentagons= []
+        this.hexagons= []
+        this.lines= []
+        console.log(this.rectangles)
+        const responcee = await fetch("http://localhost:8081/paint/undo",{
+            method:"POST",
+            headers : {
+                'Content-type':'application/json',
+            },
+            }).then(responce=>{
+            return responce.text();
+            }).then(data =>{
+            this.allshapes = JSON.parse(data);
+            console.log(this.allshapes)
+            }).catch(error => {
+            console.error("Error:", error);
+            this.isError = true;
+        });
+        console.log(this.rectangles)
+        this.allshapes.forEach((arrayItem) => {
+            if(arrayItem.name === "square"){
+                this.rectangles.push(arrayItem)
+            }   
+            else if(arrayItem.name === "rectangle")
+                this.rectangles.push(arrayItem)
+            else if(arrayItem.name === "triangle")
+                this.triangles.push(arrayItem)
+            else if(arrayItem.name === "elipse")
+                this.ellipses.push(arrayItem)
+            else if(arrayItem.name === "line")
+                this.lines.push(arrayItem)
+            else if(arrayItem.name === "pentagon")
+                this.pentagons.push(arrayItem)
+            else if(arrayItem.name === "hexagon")
+                this.hexagons.push(arrayItem)
+            else if(arrayItem.name === "circle")
+                this.circles.push(arrayItem)
+        });
+    },
+    async redo (){
+        this.rectangles= []
+        this.circles= []
+        this.ellipses= []
+        this.triangles= []
+        this.pentagons= []
+        this.hexagons= []
+        this.lines= []
+        console.log(this.rectangles)
+        const responcee = await fetch("http://localhost:8081/paint/redo",{
+            method:"POST",
+            headers : {
+                'Content-type':'application/json',
+            },
+            }).then(responce=>{
+            return responce.text();
+            }).then(data =>{
+            this.allshapes = JSON.parse(data);
+            console.log(this.allshapes)
+            }).catch(error => {
+            console.error("Error:", error);
+            this.isError = true;
+        });
+        console.log(this.rectangles)
+        this.allshapes.forEach((arrayItem) => {
+            if(arrayItem.name === "square"){
+                this.rectangles.push(arrayItem)
+            }   
+            else if(arrayItem.name === "rectangle")
+                this.rectangles.push(arrayItem)
+            else if(arrayItem.name === "triangle")
+                this.triangles.push(arrayItem)
+            else if(arrayItem.name === "elipse")
+                this.ellipses.push(arrayItem)
+            else if(arrayItem.name === "line")
+                this.lines.push(arrayItem)
+            else if(arrayItem.name === "pentagon")
+                this.pentagons.push(arrayItem)
+            else if(arrayItem.name === "hexagon")
+                this.hexagons.push(arrayItem)
+            else if(arrayItem.name === "circle")
+                this.circles.push(arrayItem)
+        });
+    },
     clear (){
         this.allshapes = []
         this.rectangles= []
@@ -242,6 +329,19 @@ export default {
         this.pentagons= []
         this.hexagons= []
         this.lines= []
+        fetch("http://localhost:8081/paint/clearAll",{
+            method:"POST",
+            headers : {
+                'Content-type':'application/json',
+            },
+            }).then(responce=>{
+            return responce.text();
+            }).then(data =>{
+            console.log(data);
+            }).catch(error => {
+            console.error("Error:", error);
+            this.isError = true;
+        });
     },
     fitStageIntoParentContainer() {
     var container = window.getComputedStyle(document.getElementById('container'))
@@ -279,6 +379,8 @@ export default {
                     id: String(this.id)
                 });
                 this.id += 1
+                console.log(square)
+                console.log(this.rectangles)
                 this.rectangles.push(square)
                 this.allshapes.push(square)
 
@@ -292,7 +394,6 @@ export default {
                 return responce.text();
                 }).then(data =>{
                 console.log(data);
-                this.result = data;
                 }).catch(error => {
                 console.error("Error:", error);
                 this.isError = true;
@@ -325,7 +426,6 @@ export default {
                 return responce.text();
                 }).then(data =>{
                 console.log(data);
-                this.result = data;
                 }).catch(error => {
                 console.error("Error:", error);
                 this.isError = true;
@@ -341,13 +441,12 @@ export default {
                     stroke: 'black',
                     draggable: true,
                     strokeWidth: 3,
-                    name: 'ellipse',
+                    name: 'elipse',
                     id: String(this.id)
                 });
                 this.id += 1
                 this.ellipses.push(ellipse)
                 this.allshapes.push(ellipse)
-
                 fetch("http://localhost:8081/paint/create",{
                 method:"POST",
                 headers : {
@@ -358,11 +457,11 @@ export default {
                 return responce.text();
                 }).then(data =>{
                 console.log(data);
-                this.result = data;
                 }).catch(error => {
                 console.error("Error:", error);
                 this.isError = true;
                 });
+                
                 break;
             case 4: 
                 var triangle = ({
@@ -390,7 +489,6 @@ export default {
                 return responce.text();
                 }).then(data =>{
                 console.log(data);
-                this.result = data;
                 }).catch(error => {
                 console.error("Error:", error);
                 this.isError = true;
@@ -421,7 +519,6 @@ export default {
                 return responce.text();
                 }).then(data =>{
                 console.log(data);
-                this.result = data;
                 }).catch(error => {
                 console.error("Error:", error);
                 this.isError = true;
@@ -452,7 +549,6 @@ export default {
                 return responce.text();
                 }).then(data =>{
                 console.log(data);
-                this.result = data;
                 }).catch(error => {
                 console.error("Error:", error);
                 this.isError = true;
@@ -484,7 +580,6 @@ export default {
                 return responce.text();
                 }).then(data =>{
                 console.log(data);
-                this.result = data;
                 }).catch(error => {
                 console.error("Error:", error);
                 this.isError = true;
@@ -516,121 +611,14 @@ export default {
                 return responce.text();
                 }).then(data =>{
                 console.log(data);
-                this.result = data;
                 }).catch(error => {
                 console.error("Error:", error);
                 this.isError = true;
                 });
                 break;
         }
-        console.log(this.allshapes)
         this.shapeVariable = 0
-    },
-
-    // transform (){
-    // //selection color -> 0 102 204
-    //     var tr = new Konva.Transformer();
-
-    //     // add a new feature, lets add ability to draw selection rectangle
-    //     var selectionRectangle = new Konva.Rect({
-    //         fill: 'rgba(0,102,204,0.5)',
-    //         visible: false,
-    //     });
-    //     layer.add(selectionRectangle);
-
-    //     var x1, y1, x2, y2;
-    //     stage.on('mousedown touchstart', (e) => {
-    //         // do nothing if we mousedown on any shape
-    //         if (e.target !== stage) {
-    //         return;
-    //         }
-    //         e.evt.preventDefault();
-    //         x1 = stage.getPointerPosition().x;
-    //         y1 = stage.getPointerPosition().y;
-    //         x2 = stage.getPointerPosition().x;
-    //         y2 = stage.getPointerPosition().y;
-
-    //         selectionRectangle.visible(true);
-    //         selectionRectangle.width(0);
-    //         selectionRectangle.height(0);
-    //     });
-
-    //     stage.on('mousemove touchmove', (e) => {
-    //         // do nothing if we didn't start selection
-    //         if (!selectionRectangle.visible()) {
-    //         return;
-    //         }
-    //         e.evt.preventDefault();
-    //         x2 = stage.getPointerPosition().x;
-    //         y2 = stage.getPointerPosition().y;
-    //         selectionRectangle.setAttrs({
-    //         x: Math.min(x1, x2),
-    //         y: Math.min(y1, y2),
-    //         width: Math.abs(x2 - x1),
-    //         height: Math.abs(y2 - y1),
-    //         });
-    //     });
-
-    //     stage.on('mouseup touchend', (e) => {
-    //         // do nothing if we didn't start selection
-    //         if (!selectionRectangle.visible()) {
-    //         return;
-    //         }
-    //         e.evt.preventDefault();
-    //         // update visibility in timeout, so we can check it in click event
-    //         setTimeout(() => {
-    //         selectionRectangle.visible(false);
-    //         });
-
-    //         var shapes = stage.find('.rectangle');          //!!!!!!!!!!!!!!!!!!!!!!!!!
-    //         var box = selectionRectangle.getClientRect();
-    //         var selected = shapes.filter((shape) =>
-    //         Konva.Util.haveIntersection(box, shape.getClientRect())
-    //         );
-    //         tr.nodes(selected);
-    //     });
-
-    //     // clicks should select/deselect shapes
-    //     stage.on('click tap', function (e) {
-    //         // if we are selecting with rect, do nothing
-    //         if (selectionRectangle.visible()) {
-    //         return;
-    //         }
-
-    //         // if click on empty area - remove all selections
-    //         if (e.target === stage) {
-    //         tr.nodes([]);
-    //         return;
-    //         }
-
-    //         // do nothing if clicked NOT on our rectangles
-    //         if (!e.target.hasName('rectangle')) {
-    //         return;
-    //         }
-
-    //         // do we pressed shift or ctrl?
-    //         const metaPressed = e.evt.shiftKey || e.evt.ctrlKey || e.evt.metaKey;
-    //         const isSelected = tr.nodes().indexOf(e.target) >= 0;
-
-    //         if (!metaPressed && !isSelected) {
-    //         // if no key pressed and the node is not selected
-    //         // select just one
-    //         tr.nodes([e.target]);
-    //         } else if (metaPressed && isSelected) {
-    //         // if we pressed keys and node was selected
-    //         // we need to remove it from selection:
-    //         const nodes = tr.nodes().slice(); // use slice to have new copy of array
-    //         // remove node from array
-    //         nodes.splice(nodes.indexOf(e.target), 1);
-    //         tr.nodes(nodes);
-    //         } else if (metaPressed && !isSelected) {
-    //         // add the node into selection
-    //         const nodes = tr.nodes().concat([e.target]);
-    //         tr.nodes(nodes);
-    //         }
-    //         tr.zIndex(100) //for the dialog box to be on top - comment this line and see the difference !
-    //     });
-    // }
+    }
   }
 }
 
