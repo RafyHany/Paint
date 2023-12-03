@@ -21,6 +21,18 @@ public abstract class shape implements Cloneable {
         this.rotation = dto.rotation ;
         this.draggable = dto.draggable ;
     }
+    public shape(shape s){
+        this.x = s.x + 50 ;
+        this.y = s.y + 50;
+        this.id = s.id ;
+        this.fill = s.fill ;
+        this.name = s.name ;
+        this.stroke = s.stroke ;
+        this.strokeWidth = s.strokeWidth ;
+        this.rotation = s.rotation ;
+        this.draggable = s.draggable ;
+    }
+
     public shape(){}
 
     public void setName(String name) {
@@ -95,25 +107,7 @@ public abstract class shape implements Cloneable {
         return draggable;
     }
 
-    
-
-   // public abstract void drawShape() ;
-
-
-    //public abstract shape  clone()throws CloneNotSupportedException ;
-    @Override
-    public String toString() {
-        return "shape{" +
-                "x=" + getX() +
-                ", y=" + getY() +
-                ", id='" + getId() + '\'' +
-                ", fill='" + getFill() + '\'' +
-                ", name='" + getName() + '\'' +
-                ", stroke='" + getStroke() + '\'' +
-                ", strokeWidth=" + getStrokeWidth() +
-                ", rotation=" + getRotation() +
-                ", draggable=" + getDraggable() +
-                '}';
-    }
+    // public abstract void drawShape() ;
+    public abstract shape clone( String idNew)throws CloneNotSupportedException ;
 
 }

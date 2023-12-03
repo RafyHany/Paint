@@ -1,6 +1,8 @@
 package com.example.paint.backend.paint.services;
 import org.springframework.stereotype.Service;
 import com.example.paint.backend.paint.services.shapes.shape;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,7 +17,7 @@ public class PaintService {
      * Paint Service class is Singelton class
      * as the program will only need one instance
      * from this class.
-     * 
+     *
      */
 
     private static PaintService paintService = null;
@@ -31,8 +33,9 @@ public class PaintService {
 
     private Stack<List<shape>> shapeStack = new Stack<>();
     private Stack<List<shape>> redoStack = new Stack<>();
-    // for cloning purpose
-    private HashMap<String, shape> shapeMap = new HashMap<>();
+
+
+    private  HashMap<String, shape> shapeMap = new HashMap<>(); // for cloning purpose
 
     public void addshape(shape shape) {
         List<shape> currentshapes = getCurrentState();
@@ -45,11 +48,11 @@ public class PaintService {
         List<shape> currentshapes = getCurrentState();
         currentshapes.removeIf(shape -> shape.getId().equals(shapeId));
         saveState(currentshapes);
-        shapeMap.remove(shapeId);
+        //shapeMap.remove(shapeId);
     }
 
-    // used in cloning a shape 
-    public shape getShapeById(String shapeId) {
+    // used in cloning a shape
+    public   shape getShapeById(String shapeId) {
         return shapeMap.get(shapeId);
     }
 
@@ -74,7 +77,7 @@ public class PaintService {
     public List<shape> getCurrentshapes() {
         return getCurrentState();
     }
-    
+
     public List<shape> undo() {
         if (!shapeStack.isEmpty()) {
             redoStack.push(shapeStack.pop());
@@ -82,7 +85,7 @@ public class PaintService {
         }
         return null;
     }
-    
+
     public List<shape> redo() {
         if (!redoStack.isEmpty()) {
             shapeStack.push(redoStack.pop());
@@ -111,6 +114,42 @@ public class PaintService {
             for (shape s : shapes) {
                 System.out.println("Shape: " + s.toString());
             }
+        }
+    }
+
+    public Save loadFromXML(String path) throws IOException {
+        Save loadedSave = Save.loadFromXML(path);
+        if (loadedSave != null) {
+            List<shape> currentShapes = getCurrentState();
+            currentShapes.addAll(loadedSave.getLastUpdate());
+            saveState(currentShapes);
+            return loadedSave;
+        } else {
+            return null;
+        }
+    }
+
+    public void saveToXML(String path, String idCounter) throws IOException {
+        Save save = new Save();
+        save.setIdCounter(idCounter);
+        save.setLastUpdate(getCurrentState());
+        save.saveToXML(path);
+    }
+    public void saveToJson(String path, String idCounter) throws IOException {
+        Save save = new Save();
+        save.setIdCounter(idCounter);
+        save.setLastUpdate(getCurrentState());
+        save.saveToJson(path);
+    }
+    public Save loadFromjson(String path) throws IOException {
+        Save loadedSave = Save.loadToJson(path);
+        if (loadedSave != null) {
+            List<shape> currentShapes = getCurrentState();
+            currentShapes.addAll(loadedSave.getLastUpdate());
+            saveState(currentShapes);
+            return loadedSave;
+        } else {
+            return null;
         }
     }
 

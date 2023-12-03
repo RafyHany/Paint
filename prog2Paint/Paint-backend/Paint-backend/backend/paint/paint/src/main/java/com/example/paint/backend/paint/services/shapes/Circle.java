@@ -1,5 +1,9 @@
 package com.example.paint.backend.paint.services.shapes;
 
+import com.example.paint.backend.paint.services.PaintService;
+
+import java.awt.*;
+
 public class Circle extends shape {
     private double radius ;
     public Circle(shapeDTO c){
@@ -7,6 +11,13 @@ public class Circle extends shape {
         this.radius = c.radius ;
     }
     public Circle() {}
+
+
+
+    public Circle(Circle c){
+        super(c);
+        this.setRadius( c.getRadius() );
+    }
 
     public double getRadius() {
         return radius;
@@ -20,10 +31,10 @@ public class Circle extends shape {
     public void drawShape() {
 
     }
-//    @Override
-//    public Circle clone(){
-//
-//    }
-
-
+    @Override
+    public shape clone( String idNew) throws CloneNotSupportedException{
+        Circle newShape = new Circle(this);
+        newShape.setId(idNew);
+        return newShape ;
+    }
 }

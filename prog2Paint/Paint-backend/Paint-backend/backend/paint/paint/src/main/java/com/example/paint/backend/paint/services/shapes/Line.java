@@ -1,5 +1,7 @@
 package com.example.paint.backend.paint.services.shapes;
 
+import com.example.paint.backend.paint.services.PaintService;
+
 public class Line extends shape{
     private double []points;
     private String lineCap ;
@@ -11,6 +13,12 @@ public class Line extends shape{
         this.lineJoin = l.lineJoin ;
     }
     public Line () {}
+    public Line (Line l) {
+        super(l);
+        this.points = l.points ;
+        this.lineCap = l.lineCap ;
+        this.lineJoin = l.lineJoin ;
+    }
 
     public double[] getPoints() {
         return points;
@@ -38,5 +46,11 @@ public class Line extends shape{
 
     public void drawShape() {
 
+    }
+    @Override
+    public Line clone( String idNew)throws CloneNotSupportedException{
+        Line newShape = new Line(this);
+        newShape.setId(idNew);
+        return newShape ;
     }
 }
