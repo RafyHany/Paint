@@ -1,14 +1,12 @@
 package com.example.paint.backend.paint.services;
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import com.example.paint.backend.paint.services.shapes.shape;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 public class Save {
     
     List<shape> lastUpdate = new ArrayList<>();
@@ -41,4 +39,35 @@ public class Save {
             return (Save) decoder.readObject();
         }
     }
+    public void saveToJson(String path) throws IOException {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.writeValue(new File(path), this);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+    public  static Save loadToJson(String path) throws IOException {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            Save object = mapper.readValue(new File(path), Save.class);
+            return object;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
 }
+/*
+* ObjectMapper mapper = new ObjectMapper();
+MyClass object = mapper.readValue(new File("file.json"), MyClass.class);
+
+*
+*
+* ObjectMapper mapper = new ObjectMapper();
+mapper.writeValue(new File("file.json"), object);
+
+*
+*
+* */

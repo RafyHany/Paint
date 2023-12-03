@@ -135,4 +135,22 @@ public class PaintService {
         save.setLastUpdate(getCurrentState());
         save.saveToXML(path);
     }
+    public void saveToJson(String path, String idCounter) throws IOException {
+        Save save = new Save();
+        save.setIdCounter(idCounter);
+        save.setLastUpdate(getCurrentState());
+        save.saveToJson(path);
+    }
+    public Save loadFromjson(String path) throws IOException {
+        Save loadedSave = Save.loadToJson(path);
+        if (loadedSave != null) {
+            List<shape> currentShapes = getCurrentState();
+            currentShapes.addAll(loadedSave.getLastUpdate());
+            saveState(currentShapes);
+            return loadedSave;
+        } else {
+            return null;
+        }
+    }
+
 }
