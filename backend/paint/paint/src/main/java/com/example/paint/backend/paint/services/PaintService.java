@@ -44,11 +44,12 @@ public class PaintService {
         shapeMap.put(shape.getId(), shape);
     }
 
-    public void removeshape(String shapeId) {
+    public List<shape> removeshape(String shapeId) {
         List<shape> currentshapes = getCurrentState();
         currentshapes.removeIf(shape -> shape.getId().equals(shapeId));
         saveState(currentshapes);
         //shapeMap.remove(shapeId);
+        return getCurrentState();
     }
 
     // used in cloning a shape 

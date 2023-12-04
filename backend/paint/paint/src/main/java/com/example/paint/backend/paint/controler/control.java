@@ -41,13 +41,13 @@ public class control {
     }
 
     @DeleteMapping("/remove/{shapeId}")
-    public ResponseEntity<String> removeShape(@PathVariable String shapeId) {
+    public ResponseEntity<List<shape>> removeShape(@PathVariable String shapeId) {
         try {
-            paintService.removeshape(shapeId);
-            return ResponseEntity.ok("Shape removed successfully");
+
+            return ResponseEntity.ok(paintService.removeshape(shapeId));
         }catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 
