@@ -69,10 +69,18 @@ public class PaintService {
             shape shape = currentshapes.get(i);
             if (shape.getId().equals(updatedshape.getId())) {
                 currentshapes.set(i, updatedshape);
-                break;
+                break ;
             }
         }
         saveState(currentshapes);
+        modifingMap();
+    }
+    public void modifingMap(){
+        List<shape> currentshapes = getCurrentState();
+        for (int i = 0; i < currentshapes.size(); i++) {
+            shape shape = currentshapes.get(i);
+            shapeMap.put(shape.getId(),shape) ;
+        }
     }
 
     public List<shape> getCurrentshapes() {
@@ -91,8 +99,10 @@ public class PaintService {
     public List<shape> redo() {
         if (!redoStack.isEmpty()) {
             shapeStack.push(redoStack.pop());
+            modifingMap();
             return getCurrentState();
         }
+        modifingMap();
         return getCurrentState();
     }
 
