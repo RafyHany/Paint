@@ -47,8 +47,8 @@ public abstract class shape implements Cloneable {
             this.scaleY = dto.scaleY ;
     }
     public shape(shape s){
-        this.x = s.x + 50 ;
-        this.y = s.y + 50;
+        this.x = s.x + 10 ;
+        this.y = s.y + 10;
         this.id = s.id ;
         this.fill = s.fill ;
         this.name = s.name ;
