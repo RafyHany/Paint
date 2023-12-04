@@ -53,6 +53,7 @@ public class Line extends shape{
     public Line clone( String idNew)throws CloneNotSupportedException{
         Line newShape = new Line(this);
         newShape.setId(idNew);
+        newShape.setY(newShape.getY()-20);
         return newShape ;
     }
 }
