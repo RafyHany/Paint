@@ -416,7 +416,7 @@ export default {
                 this.circles.push(copiedShape)
         this.copyFlag = 0
         this.updateTransformer(true)
-        this.id +=1;
+        this.id = String((Number(this.id) + 1));
         return
         }
 
@@ -675,7 +675,7 @@ export default {
                     scaleY: 1,
                     id: String(this.id)
                 });
-                this.id += 1
+                this.id = String((Number(this.id)+ 1))
                 console.log(square)
                 console.log(this.rectangles)
                 this.rectangles.push(square)
@@ -709,7 +709,7 @@ export default {
                     name: 'rectangle',
                     id: String(this.id)
                 });
-                this.id += 1
+                this.id = String((Number(this.id)+ 1))
                 this.rectangles.push(rect)
                 this.allshapes.push(rect)
 
@@ -741,7 +741,7 @@ export default {
                     name: 'elipse',
                     id: String(this.id)
                 });
-                this.id += 1
+                this.id = String((Number(this.id)+ 1))
                 this.ellipses.push(ellipse)
                 this.allshapes.push(ellipse)
                 fetch("http://localhost:8081/paint/create",{
@@ -773,7 +773,7 @@ export default {
                     name: 'triangle',
                     id: String(this.id)
                 });
-                this.id += 1
+                this.id = String((Number(this.id)+ 1))
                 this.triangles.push(triangle)
                 this.allshapes.push(triangle)
 
@@ -867,7 +867,7 @@ export default {
                     name: 'pentagon',
                     id: String(this.id)
                 });
-                this.id += 1
+                this.id = String((Number(this.id)+ 1))
                 this.pentagons.push(pentagon)
                 this.allshapes.push(pentagon)
 
@@ -899,7 +899,7 @@ export default {
                     name: 'hexagon',
                     id: String(this.id)
                 });
-                this.id +=1
+                this.id = String((Number(this.id)+ 1))
                 this.hexagons.push(hexagon)
                 this.allshapes.push(hexagon)
     
