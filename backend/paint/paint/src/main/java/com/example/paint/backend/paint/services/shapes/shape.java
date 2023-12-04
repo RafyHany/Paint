@@ -25,6 +25,8 @@ public abstract class shape implements Cloneable {
     private double strokeWidth;
     private double rotation;
     private boolean draggable ;
+    private double scaleY ;
+    private double scaleX ;
     public shape(shapeDTO dto){
         this.x = dto.x ;
         this.y = dto.y ;
@@ -35,6 +37,14 @@ public abstract class shape implements Cloneable {
         this.strokeWidth = dto.strokeWidth ;
         this.rotation = dto.rotation ;
         this.draggable = dto.draggable ;
+        if(dto.scaleX == 0 )
+            this.scaleX = 1 ;
+        else
+            this.scaleX = dto.scaleX ;
+        if(dto.scaleY == 0 )
+            this.scaleY = 1 ;
+        else
+            this.scaleY = dto.scaleY ;
     }
     public shape(shape s){
         this.x = s.x + 50 ;
@@ -46,6 +56,8 @@ public abstract class shape implements Cloneable {
         this.strokeWidth = s.strokeWidth ;
         this.rotation = s.rotation ;
         this.draggable = s.draggable ;
+        this.scaleX = s.scaleX ;
+        this.scaleY = s.scaleY ;
     }
 
     public shape(){}
@@ -86,6 +98,14 @@ public abstract class shape implements Cloneable {
         this.y = y;
     }
 
+    public void setScaleX(double scaleX) {
+        this.scaleX = scaleX;
+    }
+
+    public void setScaleY(double scaleY) {
+        this.scaleY = scaleY;
+    }
+
     public String getName() {
         return name;
     }
@@ -122,7 +142,15 @@ public abstract class shape implements Cloneable {
         return draggable;
     }
 
-   // public abstract void drawShape() ;
+    public double getScaleX() {
+        return scaleX;
+    }
+
+    public double getScaleY() {
+        return scaleY;
+    }
+
+    // public abstract void drawShape() ;
     public abstract shape clone( String idNew)throws CloneNotSupportedException ;
 
 }

@@ -14,7 +14,7 @@ public class shapeDTO {
     public String name ;
     public String stroke;
     public double strokeWidth;
-    public double rotation;
+    public double rotation; // for determine angle if rotation of shape (default = 0 )
     public boolean draggable ;
     public double radius ; // circle - triangle - poly
     public int sides ; // for any shape above 3 sides
@@ -25,6 +25,8 @@ public class shapeDTO {
     public double radiusY; // ellipse
     public double width ; // rectangle - square
     public double height ; //rectangle - square
+    public double scaleY ; // for resize in y direction (default = 1 )
+    public double scaleX ; // for resize in x direction (default = 1 )
 
 
 }
