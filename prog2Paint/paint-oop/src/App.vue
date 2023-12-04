@@ -2,20 +2,20 @@
   <body @mousemove="fitStageIntoParentContainer">
       <header id="header" >
           <div class="draw">
-                  <button id="save">Save</button>
-                  <button id="load">Load</button>
+                  <button id="save" @click="save">Save</button>
+                    <button id="load" @click="load">Load</button>
                   <div class="inputs">
-                      <input type="text"  class="name" placeholder="Enter name of file " style="display: inline;">
-                      <input type="text"  class="save" placeholder="File path to save (xml / json)">
-                      <input type="text"  class="load" placeholder="File path to load (xml / json)">
+                      <input type="text" class="name" v-model="name" placeholder="Enter name of file" style="display: inline;">
+                      <input type="text" class="save" v-model="path" placeholder="File path to save (xml / json)">
+                      <input type="text" class="load" v-model="path" placeholder="File path to load (xml / json)">
                   </div>
                   <div class="format">
-                      <ul id="extension">
-                          <li id="xml">
-                              <input type="radio" name="radio" value="xml">xml</li>
-                          <li id="json">
-                              <input type="radio" name="radio" value="json"> json</li>
-                      </ul>
+                        <ul id="extension">
+                            <li id="xml">
+                                <input type="radio" name="radio" v-model="format" value="xml">xml</li>
+                            <li id="json">
+                                <input type="radio" name="radio" v-model="format" value="json">json</li>
+                        </ul>
                       </div>
           </div>
       </header>
@@ -67,20 +67,20 @@
                 <v-stage ref="stage" :config="stageConfig" @mousedown="handleStageMouseDown" @touchstart="handleStageMouseDown">
                 <v-layer ref="myLayer">
                     <v-circle v-for="shapeConfig in circles" :key="shapeConfig" class="shapeconfig"
-                    :config="shapeConfig"></v-circle>
+                    :config="shapeConfig" @dragend="handleDragEnd" @transformend="handleTransformEnd"></v-circle>
                     <v-rect v-for="shapeConfig in rectangles" :key="shapeConfig" class="shapeconfig"
-                    :config="shapeConfig" @transformend="handleTransformEnd"></v-rect>
+                    :config="shapeConfig" @transformend="handleTransformEnd" @dragend="handleDragEnd"></v-rect>
                     
                     <v-ellipse v-for="shapeConfig in ellipses" :key="shapeConfig" class="shapeconfig"
-                    :config="shapeConfig" ></v-ellipse>
+                    :config="shapeConfig" @transformend="handleTransformEnd" @dragend="handleDragEnd"></v-ellipse>
                     <v-line v-for="shapeConfig in lines" :key="shapeConfig" class="shapeconfig"
-                    :config="shapeConfig"></v-line>
+                    :config="shapeConfig" @transformend="handleTransformEnd" @dragend="handleDragEnd"></v-line>
                     <v-regular-polygon v-for="shapeConfig in triangles" :key="shapeConfig" class="shapeconfig"
-                    :config="shapeConfig"></v-regular-polygon>
+                    :config="shapeConfig" @transformend="handleTransformEnd" @dragend="handleDragEnd"></v-regular-polygon>
                     <v-regular-polygon v-for="shapeConfig in pentagons" :key="shapeConfig" class="shapeconfig"
-                    :config="shapeConfig" ></v-regular-polygon>
+                    :config="shapeConfig" @transformend="handleTransformEnd" @dragend="handleDragEnd"></v-regular-polygon>
                     <v-regular-polygon v-for="shapeConfig in hexagons" :key="shapeConfig" class="shapeconfig"
-                    :config="shapeConfig"></v-regular-polygon>
+                    :config="shapeConfig" @transformend="handleTransformEnd" @dragend="handleDragEnd"></v-regular-polygon>
                     <v-transformer ref="transformer" />
                 </v-layer>
                 </v-stage>
@@ -89,14 +89,14 @@
       
           <div class="sidenavoption">
               <p class="title" id="option">Options</p>
-              <button class="options" id="undo" @click="undo">Undo</button>
-              <button class="options" id="redo" @click="redo">Redo</button>
-              <button class="options" id="erase">Erase</button>
-              <button class="options" id="copy">Copy</button>
-              <button class="options" id="clear" @click="clear">Clear</button>
+              <button class="options" id="undo"  @click="undo"          >Undo</button>
+              <button class="options" id="redo"  @click="redo"          >Redo</button>
+              <button class="options" id="erase" @click="deleteFlag = 1, copyFlag = 0, colorFlag = 0">Erase</button>
+              <button class="options" id="copy"  @click="copyFlag = 1, deleteFlag = 0, colorFlag = 0"  >Copy</button>
+              <button class="options" id="clear" @click="clear"         >Clear</button>
               <form>
                   <label id="selectcolor" for="coloring">Select Color</label>
-                  <input type="color" id="color" value="#dabf81" >
+                  <input type="color" id="color" value="#dabf81" @click="colorFlag = 1, copyFlag = 0, deleteFlag = 0">
               </form>
           </div>
       </div>
@@ -124,6 +124,9 @@ export default {
 
   data(){
     return {
+    colorFlag: 0,
+    copyFlag: 0,
+    deleteFlag: 0,
     id: 0,
     rectangles: [],
     circles: [],
@@ -135,9 +138,6 @@ export default {
     allshapes: [],
     layerConfig: {},
     selectedShapeId: -1,
-
-    sceneWidth: 1000, //any value as it will change instantly to fit the canvas container
-    sceneHeight: 1000,
 
     stageConfig: {
         width: 1000,
@@ -151,72 +151,357 @@ export default {
     window.addEventListener("resize", this.fitStageIntoParentContainer)
   },
   methods:{
-    handleTransformEnd(e) {
-      // shape is transformed, let us save new attrs back to the node
-      // find element in our state
-      const rect = this.rectangles.find(
-        (r) => r.name === this.selectedShapeName
-      );
-      console.log(this.selectedShapeName)
-      console.log(rect)
-      // update the state
+    //handle draging
+    handleDragEnd(e){
+        console.log(e.target.x())
+        console.log(e.target.y())
+        console.log(e.target.id())
+        var shape = this.allshapes.find((r) => r.id === e.target.id())
+        shape.x = e.target.x()
+        shape.y = e.target.y()
+        if(shape.name === "square"){
+            shape = this.rectangles.find((r) => r.id === e.target.id())
+            shape.x = e.target.x()
+            shape.y = e.target.y()
+        }
+        else if(shape.name === "rectangle"){
+            shape = this.rectangles.find((r) => r.id === e.target.id())
+            shape.x = e.target.x()
+            shape.y = e.target.y()
+        }
+        else if(shape.name === "circle"){
+            shape = this.circles.find((r) => r.id === e.target.id())
+            shape.x = e.target.x()
+            shape.y = e.target.y()
+        }
+        else if(shape.name === "triangle"){
+            shape = this.triangles.find((r) => r.id === e.target.id())
+            shape.x = e.target.x()
+            shape.y = e.target.y()
+        }
+        else if(shape.name === "pentagon"){
+            shape = this.pentagons.find((r) => r.id === e.target.id())
+            shape.x = e.target.x()
+            shape.y = e.target.y()
+        }
+        else if(shape.name === "hexagon"){
+            shape = this.hexagons.find((r) => r.id === e.target.id())
+            shape.x = e.target.x()
+            shape.y = e.target.y()
+        }
+        else if(shape.name === "line"){
+            shape = this.lines.find((r) => r.id === e.target.id())
+            shape.x = e.target.x()
+            shape.y = e.target.y()
+        }
+        else if(shape.name === "elipse"){
+            shape = this.ellipses.find((r) => r.id === e.target.id())
+            shape.x = e.target.x()
+            shape.y = e.target.y()
+        }
+        
 
-      rect.x = e.target.x();
-      rect.y = e.target.y();
-      rect.rotation = e.target.rotation();
-      rect.scaleX = e.target.scaleX();
-      rect.scaleY = e.target.scaleY();
-
-
-    // var rect = ({
-        // x: e.clientX-offsetWidthCanvas-100,
-        // y: e.clientY-offsetHeightCanvas-50,
-        // width: 200,
-        // height: 100,
-        // fill: color,
-        // stroke: 'black',
-        // draggable: true,
-        // strokeWidth: 3,
-        // name: 'rectangle',
-        // id: rectangle.id,
-        // rotation: e.target.rotation()
-    // });
-
+        fetch("http://localhost:8081/paint/update",{
+            method:"PUT",
+            headers : {
+                'Content-type':'application/json',
+            },
+            body : JSON.stringify(shape)
+            }).then(responce=>{
+            return responce.text();
+            }).then(data =>{
+            console.log(data);
+            }).catch(error => {
+            console.error("Error:", error);
+            this.isError = true;
+            });
 
     },
-    handleStageMouseDown(e) {
+
+
+    //for handling transformation (eg. resizing)
+    async handleTransformEnd(e) {
+        var shape = this.allshapes.find(
+            (r) => r.id === this.selectedShapeId
+        );
+        shape.x = e.target.x();
+        shape.y = e.target.y();
+        shape.rotation = e.target.rotation();
+        shape.scaleX = e.target.scaleX();
+        shape.scaleY = e.target.scaleY();
+        
+        if(shape.name === "square"){
+            shape = this.rectangles.find((r) => r.id === this.selectedShapeId)
+            shape.x = e.target.x();
+            shape.y = e.target.y();
+            shape.rotation = e.target.rotation();
+            shape.scaleX = e.target.scaleX();
+            shape.scaleY = e.target.scaleY();
+        }
+        else if(shape.name === "rectangle"){
+            shape = this.rectangles.find((r) => r.id === this.selectedShapeId)
+            shape.x = e.target.x();
+            shape.y = e.target.y();
+            shape.rotation = e.target.rotation();
+            shape.scaleX = e.target.scaleX();
+            shape.scaleY = e.target.scaleY();
+        }
+        else if(shape.name === "circle"){
+            shape = this.circles.find((r) => r.id === this.selectedShapeId)
+            shape.x = e.target.x();
+            shape.y = e.target.y();
+            shape.rotation = e.target.rotation();
+            shape.scaleX = e.target.scaleX();
+            shape.scaleY = e.target.scaleY();
+        }
+        else if(shape.name === "triangle"){
+            shape = this.triangles.find((r) => r.id === this.selectedShapeId)
+            shape.x = e.target.x();
+            shape.y = e.target.y();
+            shape.rotation = e.target.rotation();
+            shape.scaleX = e.target.scaleX();
+            shape.scaleY = e.target.scaleY();
+        }
+        else if(shape.name === "pentagon"){
+            shape = this.pentagons.find((r) => r.id === this.selectedShapeId)
+            shape.x = e.target.x();
+            shape.y = e.target.y();
+            shape.rotation = e.target.rotation();
+            shape.scaleX = e.target.scaleX();
+            shape.scaleY = e.target.scaleY();
+        }
+        else if(shape.name === "hexagon"){
+            shape = this.hexagons.find((r) => r.id === this.selectedShapeId)
+            shape.x = e.target.x();
+            shape.y = e.target.y();
+            shape.rotation = e.target.rotation();
+            shape.scaleX = e.target.scaleX();
+            shape.scaleY = e.target.scaleY();
+        }
+        else if(shape.name === "line"){
+            shape = this.lines.find((r) => r.id === this.selectedShapeId)
+            shape.x = e.target.x();
+            shape.y = e.target.y();
+            shape.rotation = e.target.rotation();
+            shape.scaleX = e.target.scaleX();
+            shape.scaleY = e.target.scaleY();
+        }
+        else if(shape.name === "elipse"){
+            shape = this.ellipses.find((r) => r.id === this.selectedShapeId)
+            shape.x = e.target.x();
+            shape.y = e.target.y();
+            shape.rotation = e.target.rotation();
+            shape.scaleX = e.target.scaleX();
+            shape.scaleY = e.target.scaleY();
+        }
+        
+
+        await fetch("http://localhost:8081/paint/update",{
+            method:"PUT",
+            headers : {
+                'Content-type':'application/json',
+            },
+            body : JSON.stringify(shape)
+            }).then(responce=>{
+            return responce.text();
+            }).then(data =>{
+            console.log(data);
+            }).catch(error => {
+            console.error("Error:", error);
+            this.isError = true;
+            });
+    },
+    async handleStageMouseDown(e) {
       // clicked on stage - clear selection
       if (e.target === e.target.getStage()) {
+        this.deleteFlag = 0
+        this.copyFlag = 0
+        this.colorFlag = 0
         this.selectedShapeId = -1;
-        this.updateTransformer();
+        this.updateTransformer(false);
         return;
       }
-
       // clicked on transformer - do nothing
       const clickedOnTransformer =
         e.target.getParent().className === 'Transformer';
       if (clickedOnTransformer) {
+        this.deleteFlag = 0
+        this.copyFlag = 0
+        this.colorFlag = 0
         return;
       }
 
-      // find clicked rect by its name
+      // find clicked shape by its name
       const id = e.target.id();
-      const shape = this.allshapes.find((r) => r.id === id);
+      var shape = this.allshapes.find((r) => r.id === id);
       if (shape) {
-        this.selectedShapeId = Number(id);
+        if(this.deleteFlag){
+        this.rectangles= []
+        this.circles= []
+        this.ellipses= []
+        this.triangles= []
+        this.pentagons= []
+        this.hexagons= []
+        this.lines= []
+        await fetch("http://localhost:8081/paint/remove/"+ String(id),{
+            method:"DELETE",
+            headers : {
+                'Content-type':'application/json',
+            },
+            body : JSON.stringify(shape)
+            }).then(responce=>{
+            return responce.text();
+            }).then(data =>{
+            this.allshapes = JSON.parse(data);
+            }).catch(error => {
+            console.error("Error:", error);
+            this.isError = true;
+            });
+        this.allshapes.forEach((arrayItem) => {
+            if(arrayItem.name === "square"){
+                this.rectangles.push(arrayItem)
+            }   
+            else if(arrayItem.name === "rectangle")
+                this.rectangles.push(arrayItem)
+            else if(arrayItem.name === "triangle")
+                this.triangles.push(arrayItem)
+            else if(arrayItem.name === "elipse")
+                this.ellipses.push(arrayItem)
+            else if(arrayItem.name === "line")
+                this.lines.push(arrayItem)
+            else if(arrayItem.name === "pentagon")
+                this.pentagons.push(arrayItem)
+            else if(arrayItem.name === "hexagon")
+                this.hexagons.push(arrayItem)
+            else if(arrayItem.name === "circle")
+                this.circles.push(arrayItem)
+        });
+        this.deleteFlag = 0
+        this.updateTransformer(true)
+        return
+        }
+
+        else if(this.copyFlag){
+        var copiedShape = 0
+        await fetch("http://localhost:8081/paint/clone/"+ String(id) + "/" + String(this.id),{
+            method:"POST",
+            headers : {
+                'Content-type':'application/json',
+            },
+            body : JSON.stringify(shape)
+            }).then(responce=>{
+            return responce.text();
+            }).then(data =>{
+            copiedShape = JSON.parse(data)
+            }).catch(error => {
+            console.error("Error:", error);
+            this.isError = true;
+            });
+        this.allshapes.push(copiedShape)
+            if(copiedShape.name === "square")
+                this.rectangles.push(copiedShape)
+            else if(copiedShape.name === "rectangle")
+                this.rectangles.push(copiedShape)
+            else if(copiedShape.name === "triangle")
+                this.triangles.push(copiedShape)
+            else if(copiedShape.name === "elipse")
+                this.ellipses.push(copiedShape)
+            else if(copiedShape.name === "line")
+                this.lines.push(copiedShape)
+            else if(copiedShape.name === "pentagon")
+                this.pentagons.push(copiedShape)
+            else if(copiedShape.name === "hexagon")
+                this.hexagons.push(copiedShape)
+            else if(copiedShape.name === "circle")
+                this.circles.push(copiedShape)
+        this.copyFlag = 0
+        this.updateTransformer(true)
+        this.id +=1;
+        return
+        }
+
+        else if(this.colorFlag){
+        var color = document.getElementById("color").value;
+
+        
+        if(shape.name === "square"){
+            shape.fill = color
+            shape = this.rectangles.find((r) => r.id === id)
+            shape.fill = color
+        }
+        else if(shape.name === "rectangle"){
+            shape.fill = color
+            shape = this.rectangles.find((r) => r.id === id)
+            shape.fill = color
+        }
+        else if(shape.name === "circle"){
+            shape.fill = color
+            shape = this.circles.find((r) => r.id === id)
+            shape.fill = color
+        }
+        else if(shape.name === "triangle"){
+            shape.fill = color
+            shape = this.triangles.find((r) => r.id === id)
+            shape.fill = color
+        }
+        else if(shape.name === "pentagon"){
+            shape.fill = color
+            shape = this.pentagons.find((r) => r.id === id)
+            shape.fill = color
+        }
+        else if(shape.name === "hexagon"){
+            shape.fill = color
+            shape = this.hexagons.find((r) => r.id === id)
+            shape.fill = color
+        }
+        else if(shape.name === "line"){
+            shape.stroke = color
+            shape = this.lines.find((r) => r.id === id)
+            shape.stroke = color
+        }
+        else if(shape.name === "elipse"){
+            shape.fill = color
+            shape = this.ellipses.find((r) => r.id === id)
+            shape.fill = color
+        }
+
+        await fetch("http://localhost:8081/paint/update",{
+            method:"PUT",
+            headers : {
+                'Content-type':'application/json',
+            },
+            body : JSON.stringify(shape)
+            }).then(responce=>{
+            return responce.text();
+            }).then(data =>{
+            console.log(data);
+            }).catch(error => {
+            console.error("Error:", error);
+            this.isError = true;
+            });
+        this.colorFlag = 0
+        this.updateTransformer(true)
+        return
+        }
+
+        this.selectedShapeId = id;
       } else {
         this.selectedShapeId = -1;
       }
-      this.updateTransformer();
+      this.updateTransformer(false);
     },
-    updateTransformer() {
+    updateTransformer(removeTransformer) {
       // here we need to manually attach or detach Transformer node
       const transformerNode = this.$refs.transformer.getNode();
       const stage = transformerNode.getStage();
       const { selectedShapeId } = this;
 
-      const selectedNode = stage.findOne('#' + String(selectedShapeId));
-      console.log(selectedNode)
+      const selectedNode = stage.findOne('#' + selectedShapeId);
+
+      if(removeTransformer){
+        transformerNode.nodes([]);
+        return;
+      }
       // do nothing if selected node is already attached
       if (selectedNode === transformerNode.node()) {
         return;
@@ -230,9 +515,14 @@ export default {
         transformerNode.nodes([]);
       }
     },
+    
 
 
     async undo (){
+        this.deleteFlag = 0
+        this.copyFlag = 0
+        this.colorFlag = 0
+        this.updateTransformer(true)
         this.rectangles= []
         this.circles= []
         this.ellipses= []
@@ -240,7 +530,6 @@ export default {
         this.pentagons= []
         this.hexagons= []
         this.lines= []
-        console.log(this.rectangles)
         const responcee = await fetch("http://localhost:8081/paint/undo",{
             method:"POST",
             headers : {
@@ -250,12 +539,10 @@ export default {
             return responce.text();
             }).then(data =>{
             this.allshapes = JSON.parse(data);
-            console.log(this.allshapes)
             }).catch(error => {
             console.error("Error:", error);
             this.isError = true;
         });
-        console.log(this.rectangles)
         this.allshapes.forEach((arrayItem) => {
             if(arrayItem.name === "square"){
                 this.rectangles.push(arrayItem)
@@ -277,6 +564,10 @@ export default {
         });
     },
     async redo (){
+        this.colorFlag = 0
+        this.copyFlag = 0
+        this.deleteFlag= 0
+        this.updateTransformer(true)
         this.rectangles= []
         this.circles= []
         this.ellipses= []
@@ -284,7 +575,6 @@ export default {
         this.pentagons= []
         this.hexagons= []
         this.lines= []
-        console.log(this.rectangles)
         const responcee = await fetch("http://localhost:8081/paint/redo",{
             method:"POST",
             headers : {
@@ -294,12 +584,10 @@ export default {
             return responce.text();
             }).then(data =>{
             this.allshapes = JSON.parse(data);
-            console.log(this.allshapes)
             }).catch(error => {
             console.error("Error:", error);
             this.isError = true;
         });
-        console.log(this.rectangles)
         this.allshapes.forEach((arrayItem) => {
             if(arrayItem.name === "square"){
                 this.rectangles.push(arrayItem)
@@ -321,6 +609,10 @@ export default {
         });
     },
     clear (){
+        this.colorFlag = 0
+        this.copyFlag = 0
+        this.deleteFlag = 0
+        this.updateTransformer(true)
         this.allshapes = []
         this.rectangles= []
         this.circles= []
@@ -354,6 +646,9 @@ export default {
     },
 
     createElement(event){
+        this.colorFlag = 0
+        this.copyFlag = 0
+        this.deleteFlag = 0
         var color = document.getElementById("color").value;
 
         //for adjusting position of shapes
@@ -376,6 +671,8 @@ export default {
                     strokeWidth: 3,
                     draggable: true,
                     name: 'square',
+                    scaleX: 1,
+                    scaleY: 1,
                     id: String(this.id)
                 });
                 this.id += 1
@@ -471,6 +768,7 @@ export default {
                     radius: 100,
                     fill: color,
                     stroke: 'black',
+                    draggable: true,
                     strokeWidth: 3,
                     name: 'triangle',
                     id: String(this.id)
@@ -501,6 +799,7 @@ export default {
                     radius: 60,
                     fill: color,
                     stroke: 'black',
+                    draggable: true,
                     strokeWidth: 3,
                     name: 'circle',
                     id: String(this.id)
@@ -532,6 +831,7 @@ export default {
                     strokeWidth: 10,
                     lineCap: 'round',
                     lineJoin: 'round',
+                    draggable: true,
                     name: 'line',
                     id: String(this.id)
                 });
@@ -562,6 +862,7 @@ export default {
                     radius: 70,
                     fill: color,
                     stroke: 'black',
+                    draggable: true,
                     strokeWidth: 3,
                     name: 'pentagon',
                     id: String(this.id)
@@ -594,6 +895,7 @@ export default {
                     fill: color,
                     stroke: 'black',
                     strokeWidth: 3,
+                    draggable: true,
                     name: 'hexagon',
                     id: String(this.id)
                 });
@@ -618,6 +920,93 @@ export default {
                 break;
         }
         this.shapeVariable = 0
+    },
+    async save() {
+        this.deleteFlag = 0
+        this.copyFlag = 0
+        this.colorFlag = 0
+        this.updateTransformer(true)
+      try {
+        const path = this.path + "\\" + this.name + "." + this.format;
+        const idCounter = '' + this.id;
+        console.log(path);
+        const response = await fetch('http://localhost:8081/paint/save', {
+          method: 'POST',
+          headers: {
+             'Content-Type': 'application/x-www-form-urlencoded',
+           },
+          body: new URLSearchParams({
+            path: path,
+            idCounter: idCounter,
+          }), 
+        }).then(responce=>{
+                return responce.text();
+                }).then(data =>{
+                console.log(data);
+                }).catch(error => {
+                console.error("Error:", error)});
+        } catch (error) {
+            console.error('Error saving data:', error);
+        }
+    },
+
+    async load() {
+        this.deleteFlag = 0
+        this.copyFlag = 0
+        this.colorFlag = 0
+        this.updateTransformer(true)
+
+      try {
+        const path = this.path;
+        const response = await fetch('http://localhost:8081/paint/load', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: new URLSearchParams({
+            path: path,
+          }),
+        });
+
+        if (response.ok) {
+          const loadedSave = await response.json();
+          console.log('Board is Loaded:', loadedSave);
+          this.id = loadedSave.idCounter
+          this.allshapes = loadedSave.lastUpdate
+        } else {
+          console.error('Failed to load board');
+          return;
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+        this.rectangles= []
+        this.circles= []
+        this.ellipses= []
+        this.triangles= []
+        this.pentagons= []
+        this.hexagons= []
+        this.lines= []
+        
+        this.allshapes.forEach((arrayItem) => {
+            if(arrayItem.name === "square")
+                this.rectangles.push(arrayItem)
+            else if(arrayItem.name === "rectangle")
+                this.rectangles.push(arrayItem)
+            else if(arrayItem.name === "triangle")
+                this.triangles.push(arrayItem)
+            else if(arrayItem.name === "elipse")
+                this.ellipses.push(arrayItem)
+            else if(arrayItem.name === "line")
+                this.lines.push(arrayItem)
+            else if(arrayItem.name === "pentagon")
+                this.pentagons.push(arrayItem)
+            else if(arrayItem.name === "hexagon")
+                this.hexagons.push(arrayItem)
+            else if(arrayItem.name === "circle")
+                this.circles.push(arrayItem)
+        });
+
     }
   }
 }
