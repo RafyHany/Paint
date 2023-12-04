@@ -90,6 +90,7 @@ public class PaintService {
     public List<shape> undo() {
         if (!shapeStack.isEmpty()) {
             redoStack.push(shapeStack.pop());
+            modifingMap() ;
             return getCurrentState();
         }
 
