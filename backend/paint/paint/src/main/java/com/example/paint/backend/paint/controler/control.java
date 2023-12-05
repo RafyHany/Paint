@@ -30,6 +30,7 @@ public class control {
     @PostMapping("/create")
     public ResponseEntity<Object> createShape(@RequestBody shapeDTO dto) {
         try {
+            System.out.println("arrivee");
             ShapeFactory factory = new ShapeFactory();
             shape obj = factory.createShape(dto);
             paintService.addshape(obj);
@@ -113,6 +114,7 @@ public class control {
     }
     @PostMapping("/undo")
     public ResponseEntity<List<shape>> undo() {
+       /// System.out.println("undooooooooo");
         try {
             List<shape> result = paintService.undo();
             return ResponseEntity.ok(result);

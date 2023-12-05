@@ -3,6 +3,8 @@ package com.example.paint.backend.paint.services.shapes;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.ArrayList;
+
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(value = JsonInclude.Include.NON_DEFAULT)
@@ -18,7 +20,7 @@ public class shapeDTO {
     public boolean draggable ;
     public double radius ; // circle - triangle - poly
     public int sides ; // for any shape above 3 sides
-    public double []points; //line
+    public ArrayList<Double>points; //line
     public String lineCap ; // line
     public String lineJoin ; // line
     public double radiusX; // ellipse

@@ -3,9 +3,11 @@ package com.example.paint.backend.paint.services.shapes;
 import com.example.paint.backend.paint.services.PaintService;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
+import java.util.ArrayList;
+
 @JsonTypeName("line")
 public class Line extends shape{
-    private double []points;
+    private ArrayList<Double> points;
     private String lineCap ;
     private String lineJoin ;
     public Line (shapeDTO l) {
@@ -22,7 +24,7 @@ public class Line extends shape{
         this.lineJoin = l.lineJoin ;
     }
 
-    public double[] getPoints() {
+    public ArrayList<Double> getPoints() {
         return points;
     }
 
@@ -42,7 +44,7 @@ public class Line extends shape{
         this.lineJoin = lineJoin;
     }
 
-    public void setPoints(double[] points) {
+    public void setPoints(ArrayList<Double> points) {
         this.points = points;
     }
 
