@@ -1,9 +1,17 @@
 <template>
   <body @mousemove="fitStageIntoParentContainer">
+    <div class="control-header">
+      <img class="imagesmain2" src="./assets/background.png" alt="">
       <header id="header" >
+            
           <div class="draw">
+            <div class="save-load">
+                 <img class="images" src="./assets/save.png" alt="">
                   <button id="save" @click="save">Save</button>
-                    <button id="load" @click="load">Load</button>
+                    <button id="load" @click="load" style="margin-right: 10px;">Load</button>
+                     <img class="images" src="./assets/load.png" alt="">
+            </div>
+
                   <div class="inputs">
                       <input type="text" class="name" v-model="name" placeholder="Enter name of file" style="display: inline;">
                       <input type="text" class="save" v-model="path" placeholder="File path to save (xml / json)">
@@ -19,6 +27,8 @@
                       </div>
           </div>
       </header>
+      <img class="imagesmain1" src="./assets/background.png" alt="">
+    </div>
 
       <div class="main-container">
           <div class="sidenavshape" ref="sidenavshape">
@@ -58,7 +68,6 @@
                       <img class="images" src="./assets/hexagon.png" alt="">
                       <button class="shapes" id="hexagon" @click="shapeVariable = 8">Hexagon</button>
                   </li>
-                  
               </ul>
           </div>
       
@@ -89,17 +98,39 @@
       
           <div class="sidenavoption">
               <p class="title" id="option">Options</p>
-              <button class="options" id="undo"  @click="undo"          >Undo</button>
-              <button class="options" id="redo"  @click="redo"          >Redo</button>
-              <button class="options" id="erase" @click="deleteFlag = 1, copyFlag = 0, colorFlag = 0">Erase</button>
-              <button class="options" id="copy"  @click="copyFlag = 1, deleteFlag = 0, colorFlag = 0"  >Copy</button>
-              <button class="options" id="clear" @click="clear"         >Clear</button>
+              <ul>
+                <li>
+                    <img class="images" src="./assets/undo.png" alt="">
+                     <button class="options" id="undo"  @click="undo"          >Undo</button>
+                </li>
+                <li>
+                    <img class="images" src="./assets/redo.png" alt="">
+                    <button class="options" id="redo"  @click="redo"          >Redo</button>
+                </li>
+                
+                <li>
+                    <img class="images" src="./assets/eraser.svg" alt="">
+                    <button class="options" id="erase" @click="deleteFlag = 1, copyFlag = 0, colorFlag = 0">Erase</button>
+                </li>
+                <li>
+                    <img class="images" src="./assets/copy.png" alt="">
+                    <button class="options" id="copy"  @click="copyFlag = 1, deleteFlag = 0, colorFlag = 0"  >Copy</button>
+                </li>
+                <li>
+                    <img class="images" src="./assets/clear.png" alt="" style="width:14px">
+                    <button class="options" id="clear" @click="clear">Clear</button>
+                </li>
+              </ul>
               <form>
                   <label id="selectcolor" for="coloring">Select Color</label>
-                  <input type="color" id="color" value="#dabf81" @click="colorFlag = 1, copyFlag = 0, deleteFlag = 0">
+                  <input type="color" id="color" value="#ededed" @click="colorFlag = 1, copyFlag = 0, deleteFlag = 0">
               </form>
           </div>
       </div>
+      <footer>
+        <img class="imagesmain1" src="./assets/background.png" alt="">
+        <img class="imagesmain2" src="./assets/background.png" alt="">
+      </footer>
   </body>
 </template>
 
@@ -358,9 +389,8 @@ export default {
             this.isError = true;
             });
         this.allshapes.forEach((arrayItem) => {
-            if(arrayItem.name === "square"){
+            if(arrayItem.name === "square")
                 this.rectangles.push(arrayItem)
-            }   
             else if(arrayItem.name === "rectangle")
                 this.rectangles.push(arrayItem)
             else if(arrayItem.name === "triangle")
@@ -653,9 +683,9 @@ export default {
 
         //for adjusting position of shapes
         var item1ForWidth  = document.querySelector('.sidenavshape').offsetWidth
-        var item2ForWidth  = parseInt(window.getComputedStyle(document.getElementById('container')).marginLeft)
-        var item1ForHeight = document.querySelector('header').offsetHeight
-        var item2ForHeight = parseInt(window.getComputedStyle(document.getElementById('container')).marginLeft)
+        var item2ForWidth  = parseFloat(window.getComputedStyle(document.getElementById('container')).marginLeft)*2
+        var item1ForHeight = document.querySelector('.control-header').offsetHeight
+        var item2ForHeight = parseFloat(window.getComputedStyle(document.getElementById('container')).marginTop)
         var offsetHeightCanvas = item1ForHeight + item2ForHeight
         var offsetWidthCanvas  = item1ForWidth + item2ForWidth
 
@@ -1085,7 +1115,7 @@ body{
     height:100%;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(to right,#e8d8b2,#dabf81 );
+    background: linear-gradient(to right,#b2d0e8,rgb(106, 133, 182) );
 }
 
 .main-container {
@@ -1106,16 +1136,22 @@ section {
     border-radius: calc(50px * 0.6);
 }
 
+.control-header {
+    display: flex;
+}
+
 header{
     width: calc(900px * 0.6);
-    height: calc(110px * 0.6);
+    height: calc(130px * 0.6);
     align-items: center;
     padding: calc(16px * 0.6);
     color: white;
+    border-style:ridge;
     border-radius: calc(50px * 0.6);
-    background: linear-gradient(to top,#92399a 0%,#bd82be );
+    background: linear-gradient(to top,#394b9a 0%,#a7c9e0 );
     margin: auto;
-    border: #770881;
+    margin-top: calc(20px * 0.6);
+    border-color: black;
 
 }
 
@@ -1135,7 +1171,7 @@ header{
     text-align: center;
     font-family: "Times New Roman", Arial, Helvetica, sans-serif;
     cursor: pointer;
-    background: rgb(243, 209, 255);
+    background: #e9eef0;
     margin-left: calc(3px * 0.6);
     align-content: center;
     align-items: center;
@@ -1147,7 +1183,7 @@ header{
 }
 
 #save:hover, #load:hover{
-    background-color: #664209;
+    background-color: rgb(0, 0, 0);
     color: rgb(243, 290, 255);
 }
 
@@ -1159,7 +1195,7 @@ header{
     padding: calc(8px * 0.6) calc(40px * 0.6);
     font-weight: 1000;
     font-size: calc(35px * 0.6);
-    color: #664209;
+    color: #000000;
     text-align: center;
     font-family:  Helvetica, sans-serif;
     display:flex;
@@ -1172,17 +1208,16 @@ header{
     filter:drop-shadow(100%) contrast(100%) saturate(3000%);
     margin-left: calc(-10px * 0.6);
 }
-
 .shapes, .options{
     width: 100%;
     padding : calc(5px * 0.6) 0;
     margin-bottom: calc(5px * 0.6);
     margin-top: calc(4px * 0.6);
     border-radius: calc(15px * 0.6);
-    color:rgb(2,0,2);
+    color:rgb(2, 0, 2);
     font-size: calc(20px * 0.6);
     cursor: pointer;
-    background: rgb(243, 209, 255);
+    background: #e9eef0;
     font-family: 'Signika Negative', sans-serif;
 }
 
@@ -1218,7 +1253,7 @@ form {
 }
 
 .shapes:hover, .options:hover{
-    background-color: #664209;
+    background-color: rgb(0, 0, 0);
     color: rgb(243, 290, 255);
 }
 
@@ -1229,14 +1264,17 @@ form {
     width: 10%;
     padding:calc(5px * 0.6) calc(30px * 0.6) calc(20px * 0.6) calc(30px * 0.6);
     height:calc(600px * 0.6);
-    margin: calc(15px * 0.6);
-    background: linear-gradient(to right,#92399a 0%,#bd82be );
+    margin: calc(130px * 0.6) calc(15px * 0.6) calc(15px * 0.6) calc(15px * 0.6);
+    background: linear-gradient(to right,#394b9a 0%,#a7c9e0 );
     padding-top: calc(20px * 0.6);
     border-radius: calc(50px * 0.6);
+    border-style:ridge;
+    border-color: black;
 }
 
 .sidenavoption button {
-    padding: calc(6px * 0.6) calc(16px * 0.6);
+    padding: calc(8px * 0.6) calc(25px * 0.6);
+    text-align: center;
     text-decoration: none;
     font-size: calc(25px * 0.6);
     color: black;
@@ -1253,10 +1291,12 @@ form {
     width: 10%;
     padding:calc(5px * 0.6) calc(30px * 0.6) calc(20px * 0.6);
     height: calc(600px * 0.6);
-    margin: calc(15px * 0.6);
-    background: linear-gradient(to left,#92399a 0%,#bd82be );
+    margin: calc(130px * 0.6) calc(15px * 0.6) calc(15px * 0.6) calc(15px * 0.6);
+    background: linear-gradient(to left,#394b9a 0%,#a7c9e0 );
     padding-top: calc(20px * 0.6);
     border-radius: calc(50px * 0.6);
+    border-style:ridge;
+    border-color: black;
 }
 
 .sidenavshape button {
@@ -1302,7 +1342,7 @@ li #xml, li #json{
     border-width: calc(2px * 0.6);
     margin-left:calc(5px * 0.6);
     font-size:calc(15px * 0.6);
-    width: 33%;
+    width: 37%;
     
 }
 
@@ -1316,7 +1356,7 @@ li #xml, li #json{
     border-width: calc(2px * 0.6);
     margin-left:calc(150px * 0.6);
     font-size:calc(15px * 0.6);
-    width: 33%;
+    width: 37%;
 }
 .name{
     border-radius: calc(10px * 0.6);
@@ -1327,7 +1367,7 @@ li #xml, li #json{
     border-color: #010811;
     border-width: calc(2px * 0.6);
     font-size:calc(15px * 0.6);
-    width: calc(25% * 0.6);
+    width: calc(37% * 0.6);
 } 
 
 input::-webkit-color-swatch{
@@ -1346,11 +1386,32 @@ input::-webkit-color-swatch{
 }
 
 .format input{
-    accent-color:  rgb(75, 23, 95);
+    accent-color:  rgb(5, 0, 6);
 }
 
 #extension{
     display: inline-flex;
     margin-left:calc(70px * 0.6);
+}
+
+.imagesmain1{
+    float: left;
+    width: 200px;
+    height: 150px; 
+}
+
+.imagesmain2{
+    float: right;
+    width: 200px;
+    height: 150px; 
+}
+
+#clear{
+    width: 72px;
+}
+
+.draw {
+    display: flex;
+    flex-direction: column;
 }
 </style>
