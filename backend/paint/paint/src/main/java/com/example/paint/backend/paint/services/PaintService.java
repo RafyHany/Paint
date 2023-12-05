@@ -136,6 +136,7 @@ public class PaintService {
             List<shape> currentShapes = getCurrentState();
             currentShapes.addAll(loadedSave.getLastUpdate());
             saveState(currentShapes);
+            modifingMap();
             return loadedSave;
         } else {
             return null;
@@ -160,6 +161,7 @@ public class PaintService {
             List<shape> currentShapes = getCurrentState();
             currentShapes.addAll(loadedSave.getLastUpdate());
             saveState(currentShapes);
+            modifingMap();
             return loadedSave;
         } else {
             return null;
