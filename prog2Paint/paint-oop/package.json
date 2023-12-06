@@ -1,0 +1,23 @@
+{
+  "name": "paint-oop",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build"
+  },
+  "dependencies": {
+    "@babel/preset-env": "^7.23.5",
+    "core-js": "^3.8.3",
+    "konva": "^9.2.3",
+    "vue": "^3.2.13",
+    "vue-konva": "^3.0.2"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~5.0.0",
+    "@vue/cli-service": "~5.0.0"
+  }
+}
+
+
+
